@@ -1,0 +1,35 @@
+# Session-specific data (NEVER commit)
+projects/
+session-env/
+history.jsonl
+shell-snapshots/
+debug/
+todos/
+tasks/
+plans/
+cache/
+telemetry/
+file-history/
+stats-cache.json
+
+# Plugin installations (reinstall on each machine)
+plugins/
+installed_plugins.json
+
+# Machine-specific generated files
+settings.json          # Use settings.json.template instead
+mcp.json              # Use mcp.json.template instead
+settings.local.json   # Machine-specific permissions
+
+# Environment files
+.env
+*.local.md
+
+# System files
+.DS_Store
+*.swp
+*.log
+
+# Backup files
+*.bak
+*.backup.*

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": "${CLAUDE_CONFIG_DIR}/hooks/session-start.sh",
+    "PreCompact": "${CLAUDE_CONFIG_DIR}/hooks/pre-compact.sh",
+    "SessionEnd": "${CLAUDE_CONFIG_DIR}/hooks/session-logger.sh"
+  },
+  "plugins": {
+    "discoveryPaths": [
+      "${CLAUDE_CONFIG_DIR}/plugins"
+    ],
+    "enabledPlugins": []
+  },
+  "attributionEnabled": false
+}
