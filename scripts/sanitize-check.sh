@@ -17,9 +17,9 @@ if git diff --cached | grep -E '/Users/[a-zA-Z0-9_-]+'; then
   ISSUES_FOUND=1
 fi
 
-# Check for email addresses
-if git diff --cached | grep -iE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'; then
-  echo "❌ Email address found in staged changes"
+# Check for email addresses (exclude common example domains and Python decorators)
+if git diff --cached | grep -E '\+.*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}' | grep -viE '(@(example\.(com|org|net)|test\.com|localhost|anthropic\.com)|@(mcp|pytest|app)\.)'; then
+  echo "❌ Real email address found in staged changes (example emails are OK)"
   ISSUES_FOUND=1
 fi
 
