@@ -1,3 +1,6 @@
+# Backup directory (created by install/sync scripts)
+.backup/
+
 # Session-specific data (NEVER commit)
 projects/
 session-env/
@@ -16,20 +19,14 @@ stats-cache.json
 plugins/
 installed_plugins.json
 
-# Machine-specific generated files
-settings.json          # Use settings.json.template instead
-mcp.json              # Use mcp.json.template instead
+# Machine-specific files
+mcp.json              # Copied from mcp.json.template by install script
 settings.local.json   # Machine-specific permissions
-
-# Environment files
-.env
-*.local.md
+.env                  # Machine-specific environment variables
+*.local.md            # Machine-specific plugin settings
 
 # System files
 .DS_Store
 *.swp
 *.log
-
-# Backup files
 *.bak
-*.backup.*

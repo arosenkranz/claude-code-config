@@ -2,7 +2,7 @@
 # SessionStart Hook - Load previous context on new session
 # Recreated locally from everything-claude-code plugin
 
-CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+CLAUDE_DIR="$HOME/.claude"
 SESSIONS_DIR="$CLAUDE_DIR/sessions"
 LEARNED_SKILLS_DIR="$CLAUDE_DIR/skills/learned"
 ALIASES_FILE="$CLAUDE_DIR/session-aliases.json"
@@ -89,8 +89,8 @@ detect_package_manager() {
         pm_source="package-lock.json"
     else
         # 5. Check global config
-        if [[ -f "$CLAUDE_DIR/package-manager.json" ]] && command -v jq >/dev/null 2>&1; then
-            local global_pm=$(jq -r '.packageManager // empty' "$CLAUDE_DIR/package-manager.json" 2>/dev/null)
+        if [[ -f "$HOME/.claude/package-manager.json" ]] && command -v jq >/dev/null 2>&1; then
+            local global_pm=$(jq -r '.packageManager // empty' "$HOME/.claude/package-manager.json" 2>/dev/null)
             if [[ -n "$global_pm" ]]; then
                 pm_name="$global_pm"
                 pm_source="global config"

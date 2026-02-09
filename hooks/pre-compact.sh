@@ -2,7 +2,7 @@
 # PreCompact Hook - Save state before context compaction
 # Recreated locally from everything-claude-code plugin
 
-CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+CLAUDE_DIR="$HOME/.claude"
 SESSIONS_DIR="$CLAUDE_DIR/sessions"
 COMPACTION_LOG="$SESSIONS_DIR/compaction-log.txt"
 

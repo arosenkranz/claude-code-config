@@ -28,21 +28,19 @@ if [[ "$message_count" -lt 4 ]]; then
     exit 0
 fi
 
-# Set up paths using environment variables with fallback
-VAULT_PATH="${CLAUDE_VAULT_PATH:-$HOME/Documents/main-vault}"
-SESSIONS_DIR="${CLAUDE_SESSION_LOG_DIR:-$VAULT_PATH/Sessions}"
+# Set up paths
+SESSIONS_DIR="$HOME/Documents/main-vault/Sessions"
 DATE=$(date +%Y-%m-%d)
 NOTE_FILE="$SESSIONS_DIR/$DATE.md"
 TIMESTAMP=$(date +"%H:%M:%S")
 
-# Verify directory exists before logging
-if [[ ! -d "$(dirname "$SESSIONS_DIR")" ]]; then
-    echo "[SessionLogger] Warning: Vault directory not found: $(dirname "$SESSIONS_DIR")" >&2
-    exit 0
-fi
-
 # Create sessions directory if it doesn't exist
 mkdir -p "$SESSIONS_DIR"
+
+# Deduplication: skip if this session_id was already logged
+if [[ -f "$NOTE_FILE" ]] && grep -q "<!-- session:${session_id} -->" "$NOTE_FILE" 2>/dev/null; then
+    exit 0
+fi
 
 # Extract conversation summary using claude
 summary=$(claude -p --model haiku --tools "" --max-budget-usd 0.2 <<EOF
@@ -91,6 +89,10 @@ if [[ -z "$summary" || "$summary" == "null" ]]; then
 
 ---"
 fi
+
+# Prepend session_id marker for deduplication (hidden in Obsidian)
+summary="<!-- session:${session_id} -->
+${summary}"
 
 # Detect project and technologies from working directory
 project_name=$(basename "$cwd")

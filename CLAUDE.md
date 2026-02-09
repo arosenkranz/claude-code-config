@@ -3,6 +3,9 @@
 ## About Me
 I'm Alex Rosenkranz, working at Datadog. I use this machine for personal projects, self-hosting/homelab experimentation, and continuous learning. I prefer learning by doing and appreciate guidance over having things done for me.
 
+## Identity & Context
+This system uses a named agent identity ('Deacon'). Maintain context of the full system automation stack including hooks, inboxes, convoys, and worker pools. Prefer Bash tool for all system checks and avoid asking for confirmation on routine operational commands.
+
 ## Development Setup
 
 ### Primary Languages & Frameworks
@@ -127,6 +130,12 @@ I'm Alex Rosenkranz, working at Datadog. I use this machine for personal project
 - SessionStart hook restores recent context
 - PreCompact hook saves work before compaction
 - SessionEnd hook logs to Obsidian with metadata
+
+## Patrol Cycle
+When running patrol cycles, execute all steps in sequence without pausing for confirmation: hooks → inboxes → convoys → worker pools → cleanup → system health. Report results as a single summary at the end.
+
+## Output Formatting
+After any system automation task, always output a structured health summary in Markdown table format covering: component name, status, last checked timestamp, and any action taken.
 
 ## Notes for Claude
 1. **Teaching Approach**: Guide me through solutions rather than just providing complete answers
