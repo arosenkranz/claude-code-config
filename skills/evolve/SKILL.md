@@ -1,10 +1,11 @@
 ---
 name: evolve
 description: Cluster related instincts into skills, commands, or agents
-command: true
+disable-model-invocation: true
+allowed-tools: Bash, Read, Write, Grep, Glob
 ---
 
-# Evolve Command
+# Evolve
 
 ## Implementation
 
@@ -30,7 +31,7 @@ Analyzes instincts and clusters related ones into higher-level structures:
 
 ## Evolution Rules
 
-### → Command (User-Invoked)
+### -> Command (User-Invoked)
 When instincts describe actions a user would explicitly request:
 - Multiple instincts about "when user asks to..."
 - Instincts with triggers like "when creating a new X"
@@ -41,9 +42,9 @@ Example:
 - `new-table-step2`: "when adding a database table, update schema"
 - `new-table-step3`: "when adding a database table, regenerate types"
 
-→ Creates: `/new-table` command
+-> Creates: `/new-table` command
 
-### → Skill (Auto-Triggered)
+### -> Skill (Auto-Triggered)
 When instincts describe behaviors that should happen automatically:
 - Pattern-matching triggers
 - Error handling responses
@@ -54,9 +55,9 @@ Example:
 - `use-immutable`: "when modifying state, use immutable patterns"
 - `avoid-classes`: "when designing modules, avoid class-based design"
 
-→ Creates: `functional-patterns` skill
+-> Creates: `functional-patterns` skill
 
-### → Agent (Needs Depth/Isolation)
+### -> Agent (Needs Depth/Isolation)
 When instincts describe complex, multi-step processes that benefit from isolation:
 - Debugging workflows
 - Refactoring sequences
@@ -68,7 +69,7 @@ Example:
 - `debug-step3`: "when debugging, create minimal reproduction"
 - `debug-step4`: "when debugging, verify fix with test"
 
-→ Creates: `debugger` agent
+-> Creates: `debugger` agent
 
 ## What to Do
 
@@ -86,7 +87,7 @@ Example:
 ## Output Format
 
 ```
-🧬 Evolve Analysis
+Evolve Analysis
 ==================
 
 Found 3 clusters ready for evolution:

@@ -1,10 +1,11 @@
 ---
 name: instinct-status
-description: Show all learned instincts with their confidence levels
-command: true
+description: Show all learned instincts with their confidence levels, grouped by domain.
+disable-model-invocation: true
+allowed-tools: Bash, Read, Write, Grep, Glob
 ---
 
-# Instinct Status Command
+# Instinct Status
 
 Shows all learned instincts with their confidence scores, grouped by domain.
 
@@ -33,7 +34,7 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py status
 ## Output Format
 
 ```
-📊 Instinct Status
+Instinct Status
 ==================
 
 ## Code Style (4 instincts)
@@ -41,13 +42,13 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py status
 ### prefer-functional-style
 Trigger: when writing new functions
 Action: Use functional patterns over classes
-Confidence: ████████░░ 80%
+Confidence: xxxxxxxx-- 80%
 Source: session-observation | Last updated: 2025-01-22
 
 ### use-path-aliases
 Trigger: when importing modules
 Action: Use @/ path aliases instead of relative imports
-Confidence: ██████░░░░ 60%
+Confidence: xxxxxx---- 60%
 Source: repo-analysis (github.com/acme/webapp)
 
 ## Testing (2 instincts)
@@ -55,7 +56,7 @@ Source: repo-analysis (github.com/acme/webapp)
 ### test-first-workflow
 Trigger: when adding new functionality
 Action: Write test first, then implementation
-Confidence: █████████░ 90%
+Confidence: xxxxxxxxx- 90%
 Source: session-observation
 
 ## Workflow (3 instincts)
@@ -63,7 +64,7 @@ Source: session-observation
 ### grep-before-edit
 Trigger: when modifying code
 Action: Search with Grep, confirm with Read, then Edit
-Confidence: ███████░░░ 70%
+Confidence: xxxxxxx--- 70%
 Source: session-observation
 
 ---

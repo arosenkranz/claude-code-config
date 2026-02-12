@@ -28,7 +28,7 @@ usage() {
     echo "  validate           Check all skills for valid frontmatter"
     echo "  backups            List available backups"
     echo ""
-    echo "Types: skill, agent, command, rule, hook"
+    echo "Types: skill, agent, rule, hook"
     echo ""
     echo "Options:"
     echo "  -n, --dry-run      Preview changes without applying them"
@@ -95,10 +95,6 @@ check_status() {
         agent)
             repo_path="$CONFIG_DIR/agents/$name.md"
             local_path=~/.claude/agents/"$name.md"
-            ;;
-        command)
-            repo_path="$CONFIG_DIR/commands/$name.md"
-            local_path=~/.claude/commands/"$name.md"
             ;;
         rule)
             repo_path="$CONFIG_DIR/rules/$name.md"
@@ -210,37 +206,6 @@ show_status() {
         done
     fi
     $has_agents || echo "  (none)"
-    echo ""
-
-    # Commands
-    echo -e "${BOLD}Commands:${RESET}"
-    local has_commands=false
-    if [ -d "$CONFIG_DIR/commands" ]; then
-        for command_file in "$CONFIG_DIR/commands"/*.md; do
-            [ -f "$command_file" ] || continue
-            has_commands=true
-            local name=$(basename "$command_file" .md)
-            local status=$(check_status command "$name")
-            case $status in
-                synced) echo -e "  ${GREEN}✓${RESET} $name" ;;
-                conflict) echo -e "  ${RED}⚠${RESET} $name" ;;
-                external) echo -e "  ${BLUE}→${RESET} $name" ;;
-                *) echo -e "  ${GRAY}?${RESET} $name" ;;
-            esac
-        done
-    fi
-    if [ -d ~/.claude/commands ]; then
-        for command_file in ~/.claude/commands/*.md; do
-            [ -f "$command_file" ] || continue
-            local name=$(basename "$command_file" .md)
-            local status=$(check_status command "$name")
-            if [ "$status" = "local" ]; then
-                has_commands=true
-                echo -e "  ${YELLOW}○${RESET} $name"
-            fi
-        done
-    fi
-    $has_commands || echo "  (none)"
     echo ""
 
     # Rules
@@ -391,10 +356,6 @@ cmd_add() {
             local_path=~/.claude/agents/"$name.md"
             repo_path="$CONFIG_DIR/agents/$name.md"
             ;;
-        command)
-            local_path=~/.claude/commands/"$name.md"
-            repo_path="$CONFIG_DIR/commands/$name.md"
-            ;;
         rule)
             local_path=~/.claude/rules/"$name.md"
             repo_path="$CONFIG_DIR/rules/$name.md"
@@ -463,9 +424,6 @@ cmd_remove() {
             ;;
         agent)
             repo_path="$CONFIG_DIR/agents/$name.md"
-            ;;
-        command)
-            repo_path="$CONFIG_DIR/commands/$name.md"
             ;;
         rule)
             repo_path="$CONFIG_DIR/rules/$name.md"

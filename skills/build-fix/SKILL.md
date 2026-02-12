@@ -1,3 +1,10 @@
+---
+name: build-fix
+description: Incrementally fix TypeScript and build errors one at a time, re-running the build after each fix to verify resolution.
+disable-model-invocation: true
+allowed-tools: Bash, Read, Edit, Grep, Glob
+---
+
 # Build and Fix
 
 Incrementally fix TypeScript and build errors:

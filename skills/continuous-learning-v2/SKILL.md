@@ -158,10 +158,10 @@ touch ~/.claude/homunculus/observations.jsonl
 /instinct-import     # Import instincts from others
 ```
 
-## Commands
+## Related Skills
 
-| Command | Description |
-|---------|-------------|
+| Skill | Description |
+|-------|-------------|
 | `/instinct-status` | Show all learned instincts with confidence |
 | `/evolve` | Cluster related instincts into skills/commands |
 | `/instinct-export` | Export instincts for sharing |

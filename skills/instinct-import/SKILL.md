@@ -1,10 +1,11 @@
 ---
 name: instinct-import
 description: Import instincts from teammates, Skill Creator, or other sources
-command: true
+disable-model-invocation: true
+allowed-tools: Bash, Read, Write, Grep, Glob
 ---
 
-# Instinct Import Command
+# Instinct Import
 
 ## Implementation
 
@@ -39,7 +40,7 @@ Import instincts from:
 ## Import Process
 
 ```
-📥 Importing instincts from: team-instincts.yaml
+Importing instincts from: team-instincts.yaml
 ================================================
 
 Found 12 instincts to import.
@@ -48,28 +49,28 @@ Analyzing conflicts...
 
 ## New Instincts (8)
 These will be added:
-  ✓ use-zod-validation (confidence: 0.7)
-  ✓ prefer-named-exports (confidence: 0.65)
-  ✓ test-async-functions (confidence: 0.8)
+  + use-zod-validation (confidence: 0.7)
+  + prefer-named-exports (confidence: 0.65)
+  + test-async-functions (confidence: 0.8)
   ...
 
 ## Duplicate Instincts (3)
 Already have similar instincts:
-  ⚠️ prefer-functional-style
+  ~ prefer-functional-style
      Local: 0.8 confidence, 12 observations
      Import: 0.7 confidence
-     → Keep local (higher confidence)
+     -> Keep local (higher confidence)
 
-  ⚠️ test-first-workflow
+  ~ test-first-workflow
      Local: 0.75 confidence
      Import: 0.9 confidence
-     → Update to import (higher confidence)
+     -> Update to import (higher confidence)
 
 ## Conflicting Instincts (1)
 These contradict local instincts:
-  ❌ use-classes-for-services
+  x use-classes-for-services
      Conflicts with: avoid-classes
-     → Skip (requires manual resolution)
+     -> Skip (requires manual resolution)
 
 ---
 Import 8 new, update 1, skip 3?
@@ -124,7 +125,7 @@ This fetches instincts generated from repo analysis:
 
 After import:
 ```
-✅ Import complete!
+Import complete!
 
 Added: 8 instincts
 Updated: 1 instinct

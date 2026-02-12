@@ -1,3 +1,10 @@
+---
+name: refactor-clean
+description: Safely identify and remove dead code using knip, depcheck, and ts-prune. Categorizes findings by severity and rolls back if tests fail.
+disable-model-invocation: true
+allowed-tools: Bash, Read, Edit, Write, Grep, Glob
+---
+
 # Refactor Clean
 
 Safely identify and remove dead code with test verification:
