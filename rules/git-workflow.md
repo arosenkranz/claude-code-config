@@ -41,5 +41,6 @@ When creating PRs:
    - Fix MEDIUM issues when possible
 
 4. **Commit & Push**
-   - Detailed commit messages
+   - Don't use extended commit messages when possible
+   - Don't ever include Claude or any other agent's name in commit messages
    - Follow conventional commits format
