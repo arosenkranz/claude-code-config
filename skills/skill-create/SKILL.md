@@ -1,7 +1,8 @@
 ---
 name: skill-create
 description: Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.
-allowed_tools: ["Bash", "Read", "Write", "Grep", "Glob"]
+disable-model-invocation: true
+allowed-tools: Bash, Read, Write, Grep, Glob
 ---
 
 # /skill-create - Local Skill Generation
@@ -163,10 +164,8 @@ For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Cre
 - Comment `/skill-creator analyze` on any issue
 - Receives PR with generated skills
 
-## Related Commands
+## Related Skills
 
 - `/instinct-import` - Import generated instincts
 - `/instinct-status` - View learned instincts
 - `/evolve` - Cluster instincts into skills/agents
-
----

@@ -329,41 +329,6 @@ main() {
         done
     fi
 
-    # Commands
-    if [ -d "$CONFIG_DIR/commands" ] && ls "$CONFIG_DIR/commands"/*.md &>/dev/null; then
-        mkdir -p ~/.claude/commands
-        for command in "$CONFIG_DIR/commands"/*.md; do
-            [ -f "$command" ] || continue
-            command_name=$(basename "$command")
-            local dest=~/.claude/commands/"$command_name"
-
-            if $DRY_RUN; then
-                if has_conflict "$dest"; then
-                    dry_run_msg "Would backup and replace commands/$command_name"
-                else
-                    dry_run_msg "Would link commands/$command_name"
-                fi
-            else
-                if has_conflict "$dest"; then
-                    [ -z "$backup_path" ] && backup_path=$(create_backup)
-                    if handle_conflict "$command" "$dest" "$backup_path" "commands/$command_name"; then
-                        backed_up_items+=("commands/$command_name")
-                        rm -rf "$dest"
-                        ln -sf "$command" "$dest"
-                        echo -e "${GREEN}✓${RESET} commands/$command_name (replaced, backup saved)"
-                        has_changes=true
-                    else
-                        echo -e "${YELLOW}○${RESET} commands/$command_name (kept local)"
-                    fi
-                else
-                    ln -sf "$command" "$dest"
-                    echo -e "${GREEN}✓${RESET} commands/$command_name"
-                    has_changes=true
-                fi
-            fi
-        done
-    fi
-
     # Rules
     if [ -d "$CONFIG_DIR/rules" ] && ls "$CONFIG_DIR/rules"/*.md &>/dev/null; then
         mkdir -p ~/.claude/rules

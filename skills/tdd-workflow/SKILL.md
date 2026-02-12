@@ -15,6 +15,33 @@ This skill ensures all code development follows TDD principles with comprehensiv
 - Adding API endpoints
 - Creating new components
 
+## Initial Setup
+
+If the project doesn't have a testing framework configured yet:
+
+1. **Detect project type** and recommend framework:
+   - **JS/TS (Vite)**: Vitest + React Testing Library
+   - **JS/TS (Next.js)**: Jest or Vitest + React Testing Library
+   - **JS/TS (Node)**: Vitest or Jest
+   - **Python**: pytest + pytest-asyncio
+   - **E2E**: Playwright for all project types
+
+2. **Install and configure**:
+   ```bash
+   # JS/TS example with Vitest
+   pnpm add -D vitest @testing-library/react @testing-library/jest-dom
+   # Python example
+   pip install pytest pytest-asyncio pytest-cov
+   ```
+
+3. **Create config files**: `vitest.config.ts`, `pytest.ini`, or `playwright.config.ts`
+
+4. **Set coverage thresholds** at 80% minimum
+
+5. **Add test scripts** to `package.json` or `pyproject.toml`
+
+See the `tdd-example-walkthrough.md` supporting file for a complete worked example.
+
 ## Core Principles
 
 ### 1. Tests BEFORE Code

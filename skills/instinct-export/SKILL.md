@@ -1,10 +1,11 @@
 ---
 name: instinct-export
 description: Export instincts for sharing with teammates or other projects
-command: /instinct-export
+disable-model-invocation: true
+allowed-tools: Bash, Read, Write, Grep, Glob
 ---
 
-# Instinct Export Command
+# Instinct Export
 
 Exports instincts to a shareable format. Perfect for:
 - Sharing with teammates
@@ -70,17 +71,17 @@ instincts:
 ## Privacy Considerations
 
 Exports include:
-- ✅ Trigger patterns
-- ✅ Actions
-- ✅ Confidence scores
-- ✅ Domains
-- ✅ Observation counts
+- Trigger patterns
+- Actions
+- Confidence scores
+- Domains
+- Observation counts
 
 Exports do NOT include:
-- ❌ Actual code snippets
-- ❌ File paths
-- ❌ Session transcripts
-- ❌ Personal identifiers
+- Actual code snippets
+- File paths
+- Session transcripts
+- Personal identifiers
 
 ## Flags
 

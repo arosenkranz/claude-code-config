@@ -1,12 +1,14 @@
 ---
+name: plan
 description: Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code.
+disable-model-invocation: true
 ---
 
-# Plan Command
+# Plan
 
-This command invokes the **planner** agent to create a comprehensive implementation plan before writing any code.
+This skill invokes the **planner** agent to create a comprehensive implementation plan before writing any code.
 
-## What This Command Does
+## What This Skill Does
 
 1. **Restate Requirements** - Clarify what needs to be built
 2. **Identify Risks** - Surface potential issues and blockers
@@ -83,10 +85,6 @@ Agent (planner):
 - LOW: Real-time subscription overhead
 
 ## Estimated Complexity: MEDIUM
-- Backend: 4-6 hours
-- Frontend: 3-4 hours
-- Testing: 2-3 hours
-- Total: 9-13 hours
 
 **WAITING FOR CONFIRMATION**: Proceed with this plan? (yes/no/modify)
 ```
@@ -100,14 +98,14 @@ If you want changes, respond with:
 - "different approach: [alternative]"
 - "skip phase 2 and do phase 3 first"
 
-## Integration with Other Commands
+## Integration with Other Skills
 
 After planning:
 - Use `/tdd` to implement with test-driven development
-- Use `/build-and-fix` if build errors occur
+- Use `/build-fix` if build errors occur
 - Use `/code-review` to review completed implementation
 
 ## Related Agents
 
-This command invokes the `planner` agent located at:
+This skill invokes the `planner` agent located at:
 `~/.claude/agents/planner.md`

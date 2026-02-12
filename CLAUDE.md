@@ -79,24 +79,20 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 - `tdd-guide`: Test-driven development specialist
 - Plus 6 custom agents (session-logger, docker-assistant, cloud-architect, deployment-engineer, devops-troubleshooter, test-automator)
 
-**Skills** (19 total - auto-triggered patterns):
+**Skills** (~30 total - auto-triggered patterns and user-invoked workflows):
 - `continuous-learning-v2`: Instinct-based learning system
 - `backend-patterns`: Repository pattern, service layers, API design
 - `tdd-workflow`: Test-driven development with 80%+ coverage
-- Plus 16 custom skills (frontend, homelab, creative coding, etc.)
-
-**Commands** (22 total - explicit tools):
 - `/plan`: Create implementation plan before coding
-- `/tdd`: Enforce test-first development
 - `/code-review`: Review uncommitted changes
 - `/build-fix`: Fix TypeScript/build errors incrementally
 - `/refactor-clean`: Remove dead code safely
 - `/skill-create`: Extract patterns from git history
-- `/instinct-status`: View learned patterns
-- `/evolve`: Cluster instincts into skills/commands/agents
-- `/instinct-export`: Share patterns with team
-- `/instinct-import`: Import patterns from others
-- Plus 12 custom commands
+- `/instinct-status`, `/evolve`, `/instinct-export`, `/instinct-import`: Learning system management
+- `/session-log`: Document session to Obsidian
+- `/project-setup`: Interactive project scaffolding
+- Plus additional skills (frontend, homelab, creative coding, etc.)
+- Note: Former commands are now skills with the same `/name` interface
 
 **Hooks** (3 total - lifecycle automation):
 - `SessionStart`: Restore context, detect package manager
@@ -123,7 +119,7 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 **Learning System**:
 - System observes corrections and workflows
 - Creates "instincts" with confidence scoring
-- Evolves instincts into reusable skills/commands
+- Evolves instincts into reusable skills
 - Export/import for team collaboration
 
 **Session Continuity**:
