@@ -130,29 +130,27 @@ describe('GET /api/markets/search', () => {
 ```
 
 ### 3. E2E Tests (For Critical Flows)
-Test complete user journeys with Playwright:
+Test complete user journeys with agent-browser:
 
-```typescript
-import { test, expect } from '@playwright/test'
+```bash
+# Navigate and inspect
+agent-browser open http://localhost:3000
+agent-browser snapshot -i
+# Output: textbox "Search markets" [ref=e1], ...
 
-test('user can search and view market', async ({ page }) => {
-  await page.goto('/')
+# Search for market
+agent-browser fill @e1 "election"
+agent-browser wait 600  # Debounce
+agent-browser snapshot -i
 
-  // Search for market
-  await page.fill('input[placeholder="Search markets"]', 'election')
-  await page.waitForTimeout(600) // Debounce
+# Verify results appear, click first one
+agent-browser click @e3  # First market card ref
+agent-browser wait --load networkidle
 
-  // Verify results
-  const results = page.locator('[data-testid="market-card"]')
-  await expect(results).toHaveCount(5, { timeout: 5000 })
-
-  // Click first result
-  await results.first().click()
-
-  // Verify market page loaded
-  await expect(page).toHaveURL(/\/markets\//)
-  await expect(page.locator('h1')).toBeVisible()
-})
+# Verify market page loaded
+agent-browser get url    # Should match /markets/
+agent-browser snapshot   # Verify h1 is present
+```
 ```
 
 ## Mocking External Dependencies

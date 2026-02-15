@@ -24,7 +24,7 @@ If the project doesn't have a testing framework configured yet:
    - **JS/TS (Next.js)**: Jest or Vitest + React Testing Library
    - **JS/TS (Node)**: Vitest or Jest
    - **Python**: pytest + pytest-asyncio
-   - **E2E**: Playwright for all project types
+   - **E2E**: agent-browser for all project types
 
 2. **Install and configure**:
    ```bash
@@ -34,7 +34,7 @@ If the project doesn't have a testing framework configured yet:
    pip install pytest pytest-asyncio pytest-cov
    ```
 
-3. **Create config files**: `vitest.config.ts`, `pytest.ini`, or `playwright.config.ts`
+3. **Create config files**: `vitest.config.ts` or `pytest.ini`
 
 4. **Set coverage thresholds** at 80% minimum
 
@@ -67,7 +67,7 @@ ALWAYS write tests first, then implement code to make tests pass.
 - Service interactions
 - External API calls
 
-#### E2E Tests (Playwright)
+#### E2E Tests (agent-browser)
 - Critical user flows
 - Complete workflows
 - Browser automation
@@ -202,57 +202,34 @@ describe('GET /api/markets', () => {
 })
 ```
 
-### E2E Test Pattern (Playwright)
-```typescript
-import { test, expect } from '@playwright/test'
+### E2E Test Pattern (agent-browser)
+```bash
+# Test: user can search and filter markets
+agent-browser open http://localhost:3000
+agent-browser snapshot -i
+agent-browser find text "Markets" click           # Navigate to markets
+agent-browser wait --load networkidle
+agent-browser snapshot -i
 
-test('user can search and filter markets', async ({ page }) => {
-  // Navigate to markets page
-  await page.goto('/')
-  await page.click('a[href="/markets"]')
+# Search for markets
+agent-browser find label "Search markets" fill "election"
+agent-browser wait 600                            # Debounce
+agent-browser snapshot -i                         # Verify results appear
 
-  // Verify page loaded
-  await expect(page.locator('h1')).toContainText('Markets')
+# Filter by status
+agent-browser find text "Active" click
+agent-browser snapshot -i                         # Verify filtered results
 
-  // Search for markets
-  await page.fill('input[placeholder="Search markets"]', 'election')
-
-  // Wait for debounce and results
-  await page.waitForTimeout(600)
-
-  // Verify search results displayed
-  const results = page.locator('[data-testid="market-card"]')
-  await expect(results).toHaveCount(5, { timeout: 5000 })
-
-  // Verify results contain search term
-  const firstResult = results.first()
-  await expect(firstResult).toContainText('election', { ignoreCase: true })
-
-  // Filter by status
-  await page.click('button:has-text("Active")')
-
-  // Verify filtered results
-  await expect(results).toHaveCount(3)
-})
-
-test('user can create a new market', async ({ page }) => {
-  // Login first
-  await page.goto('/creator-dashboard')
-
-  // Fill market creation form
-  await page.fill('input[name="name"]', 'Test Market')
-  await page.fill('textarea[name="description"]', 'Test description')
-  await page.fill('input[name="endDate"]', '2025-12-31')
-
-  // Submit form
-  await page.click('button[type="submit"]')
-
-  // Verify success message
-  await expect(page.locator('text=Market created successfully')).toBeVisible()
-
-  // Verify redirect to market page
-  await expect(page).toHaveURL(/\/markets\/test-market/)
-})
+# Test: user can create a new market
+agent-browser open http://localhost:3000/creator-dashboard
+agent-browser snapshot -i
+agent-browser find label "name" fill "Test Market"
+agent-browser find label "description" fill "Test description"
+agent-browser find label "endDate" fill "2025-12-31"
+agent-browser find role button click --name "Submit"
+agent-browser wait --text "Market created successfully"
+agent-browser get url                             # Verify redirect to /markets/test-market
+```
 ```
 
 ## Test File Organization
