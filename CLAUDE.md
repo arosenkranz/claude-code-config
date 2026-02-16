@@ -21,6 +21,7 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 ### Development Tools
 - **Linting/Formatting**: ESLint, Prettier
 - **Testing**: Open to recommendations based on project needs
+- **GitHub**: GitHub CLI (`gh`) for PR/issue management
 - **Platform**: macOS (Darwin)
 
 ## Homelab Setup
@@ -69,7 +70,7 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 - `coding-style.md`: Immutability, file size limits, error handling
 - `security.md`: No hardcoded secrets, environment variables required
 - `testing.md`: 80% coverage minimum, TDD workflow
-- `git-workflow.md`: Conventional commits, PR workflow
+- `git-workflow.md`: Conventional commits, GH CLI for PR/issue operations
 - `performance.md`: Model selection guidance (Haiku/Sonnet/Opus)
 
 **Agents** (6 active - specialized expertise):
