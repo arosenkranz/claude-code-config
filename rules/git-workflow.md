@@ -51,22 +51,15 @@ Note: Attribution disabled globally via ~/.claude/settings.json.
 When creating PRs:
 1. Analyze full commit history (not just latest commit)
 2. Use `git diff [base-branch]...HEAD` to see all changes
-3. Draft comprehensive PR summary with:
+3. Draft concise PR summary with:
    - Short title (under 70 characters)
-   - Summary section (1-3 bullet points)
-   - Test plan with markdown checklist
+   - Brief description (1-3 bullet points)
 4. Create PR using `gh pr create` with HEREDOC body format:
    ```bash
    gh pr create --title "feat: add user authentication" --body "$(cat <<'EOF'
-   ## Summary
    - Implement JWT-based authentication
    - Add login/logout endpoints
    - Add auth middleware
-
-   ## Test plan
-   - [ ] Unit tests pass
-   - [ ] Login flow works
-   - [ ] Protected routes require auth
    EOF
    )"
    ```
