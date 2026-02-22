@@ -75,5 +75,6 @@
   "alwaysThinkingEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "bypassPermissions": true,
-  "disableBypassPermissionsMode": false
+  "disableBypassPermissionsMode": false,
+  "effortLevel": "medium"
 }
