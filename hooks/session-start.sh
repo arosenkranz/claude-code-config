@@ -6,45 +6,46 @@ CLAUDE_DIR="$HOME/.claude"
 SESSIONS_DIR="$CLAUDE_DIR/sessions"
 LEARNED_SKILLS_DIR="$CLAUDE_DIR/skills/learned"
 ALIASES_FILE="$CLAUDE_DIR/session-aliases.json"
-SKILLS_DIR="$CLAUDE_DIR/skills"
-CONFIG_SKILLS_DIR="$HOME/Code/claude-code-config/skills"
+CONFIG_REPO="$HOME/Code/claude-code-config"
 
-# Sync ~/.claude/skills with ~/Code/claude-code-config/skills
-# - Real dirs in ~/.claude/skills/ → move to config repo, replace with symlink
-# - Dirs in config repo with no symlink → create symlink
-sync_skills() {
+# Sync a ~/.claude/<component> directory with its config repo counterpart.
+# Works for both directory-based items (skills) and file-based items (agents, hooks).
+# Args: $1=local dir, $2=config repo dir, $3=find type (d=directory, f=file), $4=label
+sync_component() {
+    local local_dir="$1"
+    local config_dir="$2"
+    local find_type="$3"
+    local label="$4"
     local moved=0
-    local linked=0
 
-    # Step 1: find real directories (not symlinks) in ~/.claude/skills/
-    while IFS= read -r -d '' skill_dir; do
-        local skill_name
-        skill_name=$(basename "$skill_dir")
-        local dest="$CONFIG_SKILLS_DIR/$skill_name"
+    # Step 1: real items (not symlinks) in local dir → move to config repo, replace with symlink
+    while IFS= read -r -d '' item; do
+        local name
+        name=$(basename "$item")
+        local dest="$config_dir/$name"
 
-        if [[ ! -d "$dest" ]]; then
-            mv "$skill_dir" "$dest"
-            ln -s "$dest" "$skill_dir"
-            echo "[SessionStart] Synced new skill to config repo: $skill_name" >&2
+        if [[ ! -e "$dest" ]]; then
+            mv "$item" "$dest"
+            ln -s "$dest" "$item"
+            echo "[SessionStart] Synced new $label to config repo: $name" >&2
             ((moved++))
         fi
-    done < <(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+    done < <(find "$local_dir" -mindepth 1 -maxdepth 1 -type "$find_type" -print0 2>/dev/null)
 
-    # Step 2: find config repo skills with no corresponding symlink
-    while IFS= read -r -d '' config_skill; do
-        local skill_name
-        skill_name=$(basename "$config_skill")
-        local link="$SKILLS_DIR/$skill_name"
+    # Step 2: config repo items with no corresponding symlink → create symlink
+    while IFS= read -r -d '' config_item; do
+        local name
+        name=$(basename "$config_item")
+        local link="$local_dir/$name"
 
         if [[ ! -e "$link" ]]; then
-            ln -s "$config_skill" "$link"
-            echo "[SessionStart] Created missing symlink for: $skill_name" >&2
-            ((linked++))
+            ln -s "$config_item" "$link"
+            echo "[SessionStart] Created missing $label symlink: $name" >&2
         fi
-    done < <(find "$CONFIG_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+    done < <(find "$config_dir" -mindepth 1 -maxdepth 1 -type "$find_type" -print0 2>/dev/null)
 
     if [[ $moved -gt 0 ]]; then
-        echo "[SessionStart] Staged $moved skill(s) for commit — run 'git -C $HOME/Code/claude-code-config add skills/ && git commit' to save" >&2
+        echo "[SessionStart] $moved $label(s) need committing — run: git -C $CONFIG_REPO add $label && git commit" >&2
     fi
 }
 
@@ -164,9 +165,11 @@ detect_package_manager() {
 
 # Main execution
 main() {
-    # Sync skills between ~/.claude/skills and config repo
-    if [[ -d "$CONFIG_SKILLS_DIR" ]]; then
-        sync_skills
+    # Sync skills, agents, and hooks with config repo
+    if [[ -d "$CONFIG_REPO" ]]; then
+        sync_component "$CLAUDE_DIR/skills"  "$CONFIG_REPO/skills"  "d" "skill"
+        sync_component "$CLAUDE_DIR/agents"  "$CONFIG_REPO/agents"  "f" "agent"
+        sync_component "$CLAUDE_DIR/hooks"   "$CONFIG_REPO/hooks"   "f" "hook"
     fi
 
     # Find recent sessions
