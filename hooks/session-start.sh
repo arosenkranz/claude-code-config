@@ -6,6 +6,47 @@ CLAUDE_DIR="$HOME/.claude"
 SESSIONS_DIR="$CLAUDE_DIR/sessions"
 LEARNED_SKILLS_DIR="$CLAUDE_DIR/skills/learned"
 ALIASES_FILE="$CLAUDE_DIR/session-aliases.json"
+SKILLS_DIR="$CLAUDE_DIR/skills"
+CONFIG_SKILLS_DIR="$HOME/Code/claude-code-config/skills"
+
+# Sync ~/.claude/skills with ~/Code/claude-code-config/skills
+# - Real dirs in ~/.claude/skills/ → move to config repo, replace with symlink
+# - Dirs in config repo with no symlink → create symlink
+sync_skills() {
+    local moved=0
+    local linked=0
+
+    # Step 1: find real directories (not symlinks) in ~/.claude/skills/
+    while IFS= read -r -d '' skill_dir; do
+        local skill_name
+        skill_name=$(basename "$skill_dir")
+        local dest="$CONFIG_SKILLS_DIR/$skill_name"
+
+        if [[ ! -d "$dest" ]]; then
+            mv "$skill_dir" "$dest"
+            ln -s "$dest" "$skill_dir"
+            echo "[SessionStart] Synced new skill to config repo: $skill_name" >&2
+            ((moved++))
+        fi
+    done < <(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+
+    # Step 2: find config repo skills with no corresponding symlink
+    while IFS= read -r -d '' config_skill; do
+        local skill_name
+        skill_name=$(basename "$config_skill")
+        local link="$SKILLS_DIR/$skill_name"
+
+        if [[ ! -e "$link" ]]; then
+            ln -s "$config_skill" "$link"
+            echo "[SessionStart] Created missing symlink for: $skill_name" >&2
+            ((linked++))
+        fi
+    done < <(find "$CONFIG_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+
+    if [[ $moved -gt 0 ]]; then
+        echo "[SessionStart] Staged $moved skill(s) for commit — run 'git -C $HOME/Code/claude-code-config add skills/ && git commit' to save" >&2
+    fi
+}
 
 # Find recent session files (last 7 days)
 find_recent_sessions() {
@@ -123,6 +164,11 @@ detect_package_manager() {
 
 # Main execution
 main() {
+    # Sync skills between ~/.claude/skills and config repo
+    if [[ -d "$CONFIG_SKILLS_DIR" ]]; then
+        sync_skills
+    fi
+
     # Find recent sessions
     recent_sessions=($(find_recent_sessions))
     session_count=${#recent_sessions[@]}
