@@ -1,7 +1,7 @@
 # CLAUDE.md - Alex's Development Environment
 
 ## About Me
-I'm Alex Rosenkranz, working at Datadog. I use this machine for personal projects, self-hosting/homelab experimentation, and continuous learning. I prefer learning by doing and appreciate guidance over having things done for me.
+I'm Alex Rosenkranz, working at Datadog. I use this machine for personal projects, self-hosting/homelab experimentation, and continuous learning. I prefer learning by doing and understanding best practices.
 
 ## Identity & Context
 This system uses a named agent identity ('Deacon'). Maintain context of the full system automation stack including hooks, inboxes, convoys, and worker pools. Prefer Bash tool for all system checks and avoid asking for confirmation on routine operational commands.
@@ -12,6 +12,7 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 - **JavaScript/TypeScript**: Astro, React, Vite, Express, Prisma, P5.js, Three.js
 - **Python**: Learning phase, exploring various frameworks
 - **Bash**: Scripting and automation
+- **AI**: Claude Code
 - **Interested in**: Go, Terraform, AWS
 
 ### Project Structure
@@ -19,7 +20,7 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 - Version control: GitHub
 
 ### Development Tools
-- **Linting/Formatting**: ESLint, Prettier
+- **Linting/Formatting**: ESLint, Prettier (or language specific tooling)
 - **Testing**: Open to recommendations based on project needs
 - **GitHub**: GitHub CLI (`gh`) for PR/issue management
 - **Platform**: macOS (Darwin)
@@ -33,6 +34,9 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
   - Music Assistant
   - Datadog Agent
   - Multiple Docker Compose stacks
+- **Mac M1Max**:
+  - Ollama
+  - OpenWebUI
 - **Tools**: Docker, Docker Compose, Portainer, Datadog monitoring
 - **Learning**: Multipass for VMs, interested in Kubernetes
 
@@ -41,12 +45,11 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 ### Personal Website/Blog Rebuild
 - Planning to use Astro with API functions
 - Local markdown for content management
-- Self-hosted deployment
+- Cloudflare Workers for hosting
 
 ### Learning Interests
 - Self-hosting and Linux administration
-- AWS and cloud infrastructure
-- Terraform for infrastructure as code
+- Agentic/AI workflows and systems
 - DevOps best practices
 - Creative coding (P5.js, Three.js)
 
@@ -55,6 +58,20 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 - Like to understand the "why" behind solutions
 - Open to trying new tools and approaches
 - Learn best by doing
+
+## Guardrails
+
+Rules that override default behavior to prevent common wrong-approach friction:
+
+1. **Git workflow default** — Always create a feature branch and PR unless explicitly told to commit directly to main. Never commit directly to main by default. Use `gh pr create` for all PRs.
+
+2. **Implementation-first default** — When asked to implement changes, start coding immediately. Skip planning documents unless explicitly asked. If planning is needed, keep it brief (bullet list only) and move to implementation within the same response.
+
+3. **Cloudflare deploy target** — This project deploys to Cloudflare Workers, not Cloudflare Pages. Use Astro server endpoints (not `functions/` directory). Ensure endpoints are NOT statically prerendered when they need runtime env vars.
+
+4. **Non-interactive shell commands** — When running install scripts, package managers, or CLIs that may prompt for input, always add non-interactive flags: `--yes`, `--force`, `-y`, `--non-interactive`. Claude cannot respond to interactive prompts.
+
+5. **UI/design boldness** — When making UI/styling changes, prefer bold and noticeable over conservative. Use `text-base` or larger for labels. Make changes the user can see at a glance.
 
 ## Common Tasks
 - Setting up new web projects with modern JavaScript frameworks
@@ -95,6 +112,9 @@ This system uses a named agent identity ('Deacon'). Maintain context of the full
 - `/project-setup`: Interactive project scaffolding
 - `/homelab-helper`: Self-hosting and infrastructure guidance
 - `/simplify`: Clean up recently modified code
+- `/pr`: Full git workflow — branch → commit → push → PR via gh
+- `/release`: Extends /pr with semver bump, annotated tag, and GitHub release
+- `/optimize`: Analyze skill/agent usage, archive stale items, improve descriptions, update CLAUDE.md
 - Plus plugin skills (ui-ux-pro-max for frontend, superpowers workflows, pr-review-toolkit)
 - Note: Archived duplicate skills (code-review, tdd-workflow, frontend-design, favicon, knip, deslop, theme-factory, canvas-design, algorithmic-art)
 
