@@ -19,12 +19,12 @@ MANDATORY workflow:
 
 ## Troubleshooting Test Failures
 
-1. Use **tdd-guide** agent
+1. Use **natalya** agent
 2. Check test isolation
 3. Verify mocks are correct
 4. Fix implementation, not tests (unless tests are wrong)
 
 ## Agent Support
 
-- **tdd-guide** - Use PROACTIVELY for new features, enforces write-tests-first
-- **e2e-runner** - agent-browser E2E testing specialist
+- **natalya** - Use PROACTIVELY for new features, enforces write-tests-first
+- **agent-browser** skill - E2E testing specialist

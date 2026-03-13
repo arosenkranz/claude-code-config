@@ -90,15 +90,17 @@ Rules that override default behavior to prevent common wrong-approach friction:
 - `git-workflow.md`: Conventional commits, GH CLI for PR/issue operations
 - `performance.md`: Model selection guidance (Haiku/Sonnet/Opus)
 
-**Agents** (6 active - specialized expertise):
-- `planner`: Create step-by-step implementation plans
-- `architect`: Architectural decisions and trade-off analysis
-- `tdd-guide`: Test-driven development specialist
-- `docker-assistant`: Container and Docker Compose expertise
-- `test-automator`: Test suite creation and CI setup
-- `security-reviewer`: Security vulnerability scanning
+**Agents** (8 active — Operation Goldeneye roster):
+- `m`: Strategic planning + architecture (merges planner + architect) — triggers on "plan", "design", "approach"
+- `natalya`: Implementation engineer with pragmatic testing (merges tdd-guide + test-automator) — triggers on "implement", "build", "fix"
+- `boris`: Security specialist, attacker mindset — triggers on "security review", "vulnerabilities", auth/deploy work
+- `moneypenny`: Session logging + blog content writing — triggers on "log session", "blog post", SessionEnd hook
+- `q`: Docker/homelab, Cloudflare Workers deploy, CI/CD (replaces docker-assistant) — triggers on "docker", "deploy", "homelab"
+- `wade`: Project continuity, reads session logs + git history to brief you — triggers on "where was I", "catch me up"
+- `trevelyan`: Adversarial code reviewer, challenges assumptions + design flaws — triggers on "review", "challenge this", "what am I missing"
+- `xenia`: Stress + performance testing, load scenarios, edge case generation — triggers on "performance", "load test", "what could break"
 - Plus plugin agents (pr-review-toolkit, feature-dev, superpowers)
-- Note: Archived cloud-architect, deployment-engineer, devops-troubleshooter, code-reviewer (use pr-review-toolkit instead)
+- Note: Archived planner, architect, tdd-guide, test-automator, docker-assistant, security-reviewer, session-logger, cloud-architect, deployment-engineer, devops-troubleshooter, code-reviewer
 
 **Skills** (~30 active - auto-triggered patterns and user-invoked workflows):
 - `continuous-learning-v2`: Instinct-based learning system

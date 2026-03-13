@@ -41,7 +41,7 @@ For complex tasks requiring deep reasoning:
 ## Build Troubleshooting
 
 If build fails:
-1. Use **build-error-resolver** agent
-2. Analyze error messages
-3. Fix incrementally
-4. Verify after each fix
+1. Analyze error messages carefully
+2. Fix incrementally, one error at a time
+3. Verify after each fix
+4. Use `/build-fix` skill for TypeScript build errors

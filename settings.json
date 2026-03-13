@@ -146,7 +146,6 @@
       }
     ]
   },
-  "_note_hooks": "PreToolUse/PostToolUse/SessionStart/PreCompact above are kept for local skill symlinks. When learning-system plugin is installed, these can be removed (plugin hooks.json handles them via CLAUDE_PLUGIN_ROOT).",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
@@ -179,11 +178,22 @@
     "goldeneye-agents@arosenkranz-claude-plugins": false,
     "learning-system@arosenkranz-claude-plugins": false,
     "workflow-skills@arosenkranz-claude-plugins": false,
-    "language-skills@arosenkranz-claude-plugins": false
+    "language-skills@arosenkranz-claude-plugins": false,
+    "learning-system@alex-rosenkranz-plugins": true,
+    "workflow-skills@alex-rosenkranz-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "alex-rosenkranz-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "arosenkranz/claude-plugins"
+      }
+    }
   },
   "alwaysThinkingEnabled": false,
   "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
+  "_note_hooks": "PreToolUse/PostToolUse/SessionStart/PreCompact above are kept for local skill symlinks. When learning-system plugin is installed, these can be removed (plugin hooks.json handles them via CLAUDE_PLUGIN_ROOT).",
   "bypassPermissions": true,
   "disableBypassPermissionsMode": false
 }

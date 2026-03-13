@@ -2,6 +2,7 @@
 name: security-reviewer
 description: Reviews code for security issues including injection vulnerabilities, auth flaws, and secrets in code.
 tools: Read, Grep, Glob
+model: opus
 ---
 
 # Security Code Review
