@@ -38,27 +38,31 @@ Remember this path as the project directory. Use it in all subsequent `cd` and `
 
 ### 3. Ensure yazi shows hidden files
 
-Check if yazi config already has `show_hidden`:
-
-```bash
-grep -s "show_hidden" ~/.config/yazi/yazi.toml
-```
-
-If output is empty (not configured), create the config directory:
+Create the config directory if it doesn't exist:
 
 ```bash
 mkdir -p ~/.config/yazi
 ```
 
-Then write the config:
+Always write the config (overwrite to ensure correct structure):
 
 ```bash
-printf '[manager]\nshow_hidden = true\n' >> ~/.config/yazi/yazi.toml
+printf '[manager]\nshow_hidden = true\n' > ~/.config/yazi/yazi.toml
 ```
 
-If `grep` found `show_hidden`, skip the mkdir and write steps — config is already set.
+Verify it was written correctly:
 
-If the write fails, warn Alex: "Could not write yazi config — hidden files may not show" and continue.
+```bash
+cat ~/.config/yazi/yazi.toml
+```
+
+Expected output:
+```
+[manager]
+show_hidden = true
+```
+
+If the output doesn't match, warn Alex: "Could not write yazi config — hidden files may not show" and continue.
 
 ### 4. Clean up existing surfaces
 
@@ -70,21 +74,27 @@ cmux identify
 
 The output is `surface:N workspace:N`. Remember the `surface:N` value — this is the Claude Code surface to preserve.
 
-List all surfaces in the workspace:
+List all panes in the workspace:
 
 ```bash
-cmux list-pane-surfaces
+cmux list-panes
 ```
 
-The output is a list of `surface:N` tokens. For each surface that is NOT the Claude Code surface identified in the previous step, close it:
+For each `pane:N` token in the output, list its surfaces:
+
+```bash
+cmux list-pane-surfaces --pane <pane-ref>
+```
+
+Collect every `surface:N` token returned across all panes. For each surface that is NOT the Claude Code surface identified above, close it:
 
 ```bash
 cmux close-surface --surface <ref>
 ```
 
-If `close-surface` fails for any surface, ignore the error and continue. If `list-pane-surfaces` returns only the Claude Code surface (or is empty), skip closing and proceed directly to Step 5.
+If `close-surface` fails for any surface, ignore the error and continue. If no extra surfaces are found across any pane, skip closing and proceed directly to Step 5.
 
-After closing, wait for cmux to settle:
+After closing all extra surfaces, wait for cmux to settle:
 
 ```bash
 sleep 0.5
@@ -202,7 +212,7 @@ Debug:
 | `cmux new-split down` fails | "Failed to create yazi pane. Lazygit may still be usable." Continue. |
 | `close-surface` fails | Surface already closed or missing. Continue. |
 | `yazi.toml` write fails | "Could not write yazi config — hidden files may not show." Continue. |
-| No extra surfaces to close | Skip cleanup, go straight to Step 5. |
+| No extra surfaces across any pane | Skip cleanup, go straight to Step 5. |
 | lazygit shows git-init prompt | Ask Alex: "Init repo here? Reply y or N." |
 | lazygit not installed | "Run: `brew install lazygit`" |
 | yazi not installed | "Run: `brew install yazi`" |
