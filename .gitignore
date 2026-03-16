@@ -25,6 +25,14 @@ settings.local.json   # Machine-specific permissions
 .env                  # Machine-specific environment variables
 *.local.md            # Machine-specific plugin settings
 
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# Packaged skill archives (binary)
+*.skill
+
 # System files
 .DS_Store
 *.swp
