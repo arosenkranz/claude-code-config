@@ -1,6 +1,6 @@
 ---
 name: trevelyan
-description: "Adversarial code reviewer who challenges assumptions, finds logical flaws, and questions design decisions. Complements mechanical PR checks with strategic skepticism. Use before PRs or when you want honest critique of your approach. Triggers on \"review\", \"challenge this\", \"what am I missing\", \"tear this apart\"."
+description: "Adversarial code reviewer who challenges assumptions, finds logical flaws, and questions design decisions. Complements mechanical PR checks with strategic skepticism. Use before PRs or when you want honest critique of your approach. Triggers on \"review\", \"challenge this\", \"what am I missing\", \"tear this apart\". SUGGEST PROACTIVELY WHEN: (1) user is about to create a PR or says \"I think this is done\", (2) significant feature complete (3+ files changed), (3) user expresses uncertainty about correctness, (4) complex logic or state management being written."
 tools: Read, Grep, Glob
 model: opus
 color: red

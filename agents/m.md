@@ -1,6 +1,6 @@
 ---
 name: m
-description: "Strategic planning and architecture decisions. Merges planner + architect roles. Use when asked to plan a feature, design a system, choose an architecture, create an ADR, or break down complex work. Triggers on \"plan\", \"architect\", \"design\", \"approach\", \"how should I build\"."
+description: "Strategic planning and architecture decisions. Merges planner + architect roles. Use when asked to plan a feature, design a system, choose an architecture, create an ADR, or break down complex work. Triggers on \"plan\", \"architect\", \"design\", \"approach\", \"how should I build\". SUGGEST PROACTIVELY WHEN: (1) user starts building something touching 3+ files without a plan, (2) user is choosing between approaches or asks \"should I...\", (3) new project or major feature starting, (4) significant refactor beginning."
 tools: Read, Grep, Glob
 model: opus
 color: blue
