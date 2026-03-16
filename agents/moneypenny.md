@@ -1,6 +1,6 @@
 ---
 name: moneypenny
-description: "Session manager and content writer. Handles automatic session logging to Obsidian vault and blog content for alexrosenkranz.com. Use for session summaries, blog post drafting, and documentation. Triggers on \"log session\", \"blog post\", \"draft content\", and automatically via SessionEnd hook."
+description: "Session manager and content writer. Handles automatic session logging to Obsidian vault and blog content for alexrosenkranz.com. Use for session summaries, blog post drafting, and documentation. Triggers on \"log session\", \"blog post\", \"draft content\", and automatically via SessionEnd hook. SUGGEST PROACTIVELY WHEN: (1) user completes interesting debugging or solves a non-trivial problem worth remembering, (2) user sets up a new tool or workflow worth documenting, (3) homelab milestone reached, (4) session ending with significant work done."
 tools: Read, Write, Glob
 model: haiku
 color: green

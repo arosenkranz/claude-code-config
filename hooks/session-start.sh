@@ -257,6 +257,13 @@ main() {
         fi
     fi
 
+    # Hint wade when uncommitted work exists
+    if git -C "$PWD" rev-parse --git-dir >/dev/null 2>&1; then
+        if git -C "$PWD" status --porcelain 2>/dev/null | grep -q '^'; then
+            echo "[SessionStart] Uncommitted changes detected. Consider invoking wade for a project briefing." >&2
+        fi
+    fi
+
     # Detect package manager
     pm_info=$(detect_package_manager)
     pm_name=$(echo "$pm_info" | cut -d'|' -f1)

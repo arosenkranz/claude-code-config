@@ -102,6 +102,19 @@ Rules that override default behavior to prevent common wrong-approach friction:
 - Plus plugin agents (pr-review-toolkit, feature-dev, superpowers)
 - Note: Archived planner, architect, tdd-guide, test-automator, docker-assistant, security-reviewer, session-logger, cloud-architect, deployment-engineer, devops-troubleshooter, code-reviewer
 
+**Agent Dispatch Guidance** (suggest these proactively — don't wait to be asked):
+
+| Situation | Agent | Suggested Prompt |
+|-----------|-------|-----------------|
+| Multi-file feature without a plan | **m** | "Want m to plan this first?" |
+| About to create a PR | **trevelyan** + **boris** | "Want a design review and security check before this PR?" |
+| Writing code without tests | **natalya** | "Want natalya to implement this with tests?" |
+| Modifying Dockerfile/CI/wrangler.toml | **q** | "Infrastructure change — want q to review?" |
+| Session start with uncommitted work | **wade** | "Uncommitted changes detected. Want a wade briefing?" |
+| Interesting debugging completed | **moneypenny** | "Good debugging session. Blog post material?" |
+| New API endpoint being built | **xenia** | "Want xenia to generate edge cases?" |
+| Auth/secrets code modified | **boris** | "Sensitive code change. Security review?" |
+
 **Skills** (~30 active - auto-triggered patterns and user-invoked workflows):
 - `continuous-learning-v2`: Instinct-based learning system
 - `backend-patterns`: Repository pattern, service layers, API design

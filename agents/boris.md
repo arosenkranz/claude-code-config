@@ -1,6 +1,6 @@
 ---
 name: boris
-description: "Security specialist with attacker mindset. Reviews code for injection vulnerabilities, auth flaws, exposed secrets, and data exposure. Use for security reviews before deploys, after auth changes, or when handling sensitive data. Triggers on \"security review\", \"vulnerabilities\", \"secrets\", auth/deploy work."
+description: "Security specialist with attacker mindset. Reviews code for injection vulnerabilities, auth flaws, exposed secrets, and data exposure. Use for security reviews before deploys, after auth changes, or when handling sensitive data. Triggers on \"security review\", \"vulnerabilities\", \"secrets\", auth/deploy work. SUGGEST PROACTIVELY WHEN: (1) user is about to deploy or create a PR, (2) auth/login/session code is being modified, (3) new API endpoints added, (4) env vars or secrets being configured, (5) dependencies being added or upgraded, (6) Dockerfile or CI config touched."
 tools: Read, Grep, Glob
 model: opus
 color: yellow

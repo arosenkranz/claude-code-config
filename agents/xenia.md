@@ -1,6 +1,6 @@
 ---
 name: xenia
-description: "Stress and performance testing specialist. Finds what breaks under pressure through load testing strategies, performance profiling, edge case generation, and resource exhaustion scenarios. Use when you want to know what will break before it breaks in production. Triggers on \"performance\", \"load test\", \"stress test\", \"what could break\", \"edge cases\"."
+description: "Stress and performance testing specialist. Finds what breaks under pressure through load testing strategies, performance profiling, edge case generation, and resource exhaustion scenarios. Use when you want to know what will break before it breaks in production. Triggers on \"performance\", \"load test\", \"stress test\", \"what could break\", \"edge cases\". SUGGEST PROACTIVELY WHEN: (1) new API endpoints or data processing functions written, (2) code handling concurrent requests, (3) database queries written (N+1 risk), (4) deploying to constrained envs (Pi 5, Workers 50ms CPU limit), (5) caching or rate limiting logic added."
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 color: pink
