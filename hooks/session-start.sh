@@ -81,6 +81,34 @@ list_aliases() {
     fi
 }
 
+# Kill stale dev server processes scoped to the current project directory
+kill_stale_project_servers() {
+    local project_dir="$PWD"
+    # Skip if not in a Code project directory
+    [[ "$project_dir" != */Code/* ]] && return
+
+    local killed=0
+    local pids
+    pids=$(pgrep -f "node.*${project_dir}" 2>/dev/null || true)
+
+    for pid in $pids; do
+        local cmd
+        cmd=$(ps -p "$pid" -o command= 2>/dev/null || true)
+
+        # Only kill likely dev server processes, skip MCP servers and tsserver
+        if echo "$cmd" | grep -qE "(vite|nitro|next|webpack|dev|serve)" && \
+           ! echo "$cmd" | grep -qE "(mcp-server|tsserver|task-master|context7)"; then
+            kill "$pid" 2>/dev/null || true
+            echo "[SessionStart] Killed stale process (PID $pid): ${cmd:0:80}" >&2
+            ((killed++))
+        fi
+    done
+
+    if [[ $killed -gt 0 ]]; then
+        echo "[SessionStart] Cleaned up $killed stale dev server(s) in $project_dir" >&2
+    fi
+}
+
 # Detect package manager
 detect_package_manager() {
     local pm_name="npm"
@@ -165,6 +193,9 @@ detect_package_manager() {
 
 # Main execution
 main() {
+    # Kill stale dev servers from previous sessions
+    kill_stale_project_servers
+
     # Sync skills, agents, and hooks with config repo
     if [[ -d "$CONFIG_REPO" ]]; then
         sync_component "$CLAUDE_DIR/skills"  "$CONFIG_REPO/skills"  "d" "skill"
@@ -193,6 +224,37 @@ main() {
         alias_count=$(echo "$aliases" | tr ',' '\n' | grep -v '^$' | wc -l | tr -d ' ')
         echo "[SessionStart] $alias_count session alias(es) available: $aliases" >&2
         echo "[SessionStart] Use /sessions load <alias> to continue a previous session" >&2
+    fi
+
+    # Memory briefing from SQLite
+    MEMORY_DB="${MEMORY_DB_PATH:-$HOME/.claude/memory.db}"
+    if [[ -f "$MEMORY_DB" ]] && command -v sqlite3 >/dev/null 2>&1; then
+        CWD_PATH="${PWD:-$HOME}"
+        PROJECT_SCOPE=""
+        if [[ "$CWD_PATH" == */Code/* ]]; then
+            PROJECT_NAME=$(echo "$CWD_PATH" | sed 's|.*/Code/||' | cut -d'/' -f1)
+            PROJECT_SCOPE="project:$PROJECT_NAME"
+        fi
+
+        if [[ -n "$PROJECT_SCOPE" ]]; then
+            RECENT=$(sqlite3 "$MEMORY_DB" "SELECT e.name || ' (' || e.entity_type || '): ' || o.content FROM observations o JOIN entities e ON e.id = o.entity_id WHERE e.scope = '$PROJECT_SCOPE' AND o.created_at > strftime('%s','now','-7 days') ORDER BY o.created_at DESC LIMIT 10;" 2>/dev/null)
+            if [[ -n "$RECENT" ]]; then
+                echo "[Memory] Recent context for $PROJECT_SCOPE:" >&2
+                echo "$RECENT" | while IFS= read -r line; do echo "[Memory]   * $line" >&2; done
+            fi
+        fi
+
+        GLOBALS=$(sqlite3 "$MEMORY_DB" "SELECT e.name || ' (' || e.entity_type || '): ' || o.content FROM observations o JOIN entities e ON e.id = o.entity_id WHERE e.scope = 'global' AND o.confidence >= 0.8 ORDER BY o.confidence DESC, o.created_at DESC LIMIT 5;" 2>/dev/null)
+        if [[ -n "$GLOBALS" ]]; then
+            echo "[Memory] Key global context:" >&2
+            echo "$GLOBALS" | while IFS= read -r line; do echo "[Memory]   * $line" >&2; done
+        fi
+
+        EXPIRING=$(sqlite3 "$MEMORY_DB" "SELECT e.name || ': ' || o.content || ' (expires ' || date(o.expires_at,'unixepoch') || ')' FROM observations o JOIN entities e ON e.id = o.entity_id WHERE o.expires_at IS NOT NULL AND o.expires_at < strftime('%s','now','+7 days') AND o.expires_at > strftime('%s','now') ORDER BY o.expires_at ASC LIMIT 5;" 2>/dev/null)
+        if [[ -n "$EXPIRING" ]]; then
+            echo "[Memory] Expiring soon:" >&2
+            echo "$EXPIRING" | while IFS= read -r line; do echo "[Memory]   ! $line" >&2; done
+        fi
     fi
 
     # Detect package manager

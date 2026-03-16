@@ -125,10 +125,10 @@ Rules that override default behavior to prevent common wrong-approach friction:
 - `PreCompact`: Save state before context compaction
 - `SessionEnd`: Log session to Obsidian vault
 
-**MCP Servers** (2 active):
+**MCP Servers** (3 active):
 - `filesystem`: File operations
 - `sequential-thinking`: Step-by-step reasoning
-- Note: Disabled memory (connection issues), task-master-ai (stale), greptile (unused)
+- `memory`: Custom SQLite-backed memory server (`~/Code/claude-memory/`) — DB at `~/.claude/memory.db`
 - Note: context7 plugin enabled for documentation lookups
 
 ### Workflow Integration
@@ -158,9 +158,50 @@ Rules that override default behavior to prevent common wrong-approach friction:
 - Export/import for team collaboration
 
 **Session Continuity**:
-- SessionStart hook restores recent context
+- SessionStart hook restores recent context + emits `[Memory]` briefing from SQLite
 - PreCompact hook saves work before compaction
-- SessionEnd hook logs to Obsidian with metadata
+- SessionEnd hook logs to Obsidian (human-readable) AND SQLite (machine-retrievable)
+
+## Memory System
+
+SQLite-backed knowledge graph at `~/.claude/memory.db`. Use these tools proactively.
+
+### When to STORE (`memory_store`)
+- Architecture decisions and why they were made
+- Preferences discovered during a session (tools, patterns, approaches)
+- Project context: tech stack, active work, blockers
+- Learnings from debugging or fixing bugs
+- Session summaries at natural stopping points
+
+### When to QUERY (`memory_query`, `memory_get_entity`)
+- Session start — check for prior context on the current project
+- Before making architectural decisions — see what was decided before
+- When user says "we've done this before" or context seems missing
+- Before recommending tools or approaches — check preferences
+
+### Entity Types
+- `project` — codebases, repos, active work
+- `decision` — architectural choices with rationale
+- `service` — tools, APIs, external services
+- `preference` — user preferences and workflow choices
+- `instinct` — learned patterns from the learning system
+- `learning` — insights from sessions or debugging
+- `person` — collaborators, stakeholders
+
+### Scoping
+- `global` — applies across all projects
+- `project:<name>` — specific to one project (e.g., `project:claude-memory`)
+- `homelab` — Raspberry Pi / self-hosting context
+
+### Example Usage
+```
+memory_store(name="claude-memory", entity_type="project", scope="project:claude-memory",
+  content="SQLite MCP server for cross-session memory. Built Mar 2026.", confidence=1.0)
+
+memory_query(query="authentication decision", scope="project:my-app")
+
+memory_briefing(scope="project:claude-memory")  # session-start context dump
+```
 
 ## Patrol Cycle
 When running patrol cycles, execute all steps in sequence without pausing for confirmation: hooks → inboxes → convoys → worker pools → cleanup → system health. Report results as a single summary at the end.
