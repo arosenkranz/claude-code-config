@@ -1,54 +1,83 @@
 # claude-code-config
 
-Shareable Claude Code configuration using symlink-based sync. This repo contains rules, agents, commands, skills, and hooks that extend Claude Code's capabilities.
+Shareable Claude Code configuration using symlink-based sync. Contains rules, agents, skills, hooks, and MCP server config that extend Claude Code's capabilities — designed to work as a personal dev environment and as a starting point for others.
+
+## Prerequisites
+
+Before installing, make sure you have:
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| [Claude Code](https://claude.ai/code) | Required — this config extends it | See Anthropic docs |
+| Node.js (v18+) | MCP servers run via `npx` | `brew install node` or [nvm](https://github.com/nvm-sh/nvm) |
+| [cmux](https://github.com/nicholasgasior/cmux) | Workspace skill — 3-pane terminal layout | `brew install cmux` |
+| [yazi](https://github.com/sxyazi/yazi) | Workspace skill — file navigation pane | `brew install yazi` |
+| [lazygit](https://github.com/jesseduffield/lazygit) | Workspace skill — git diff pane | `brew install lazygit` |
+| [bats](https://github.com/bats-core/bats-core) | Running tests in this repo | `brew install bats-core` |
+| [agent-browser](https://www.npmjs.com/package/agent-browser) | Browser automation skill | `npm install -g agent-browser` |
+
+> cmux, yazi, lazygit, and agent-browser are only required for specific skills. The core config (rules, agents, MCP servers) works without them.
 
 ## What's Included
 
 ### Rules (5)
-Auto-enforced coding standards:
-- `coding-style.md` - Immutability, file organization, error handling
-- `security.md` - Secret management, input validation
-- `testing.md` - 80% coverage minimum, TDD workflow
-- `git-workflow.md` - Conventional commits, PR workflow
-- `performance.md` - Model selection guidance
+Auto-enforced coding standards that apply to every session:
+- `coding-style.md` — Immutability, file size limits, error handling
+- `security.md` — No hardcoded secrets, environment variables required
+- `testing.md` — 80% coverage minimum, TDD workflow
+- `git-workflow.md` — Conventional commits, GH CLI for PR/issue operations
+- `performance.md` — Model selection guidance (Haiku/Sonnet/Opus)
 
-### Agents (11)
-Specialized expertise:
-- `planner` - Implementation planning
-- `architect` - Architectural decisions
-- `code-reviewer` - Security, quality, performance review
-- `tdd-guide` - Test-driven development
-- `security-reviewer` - Security vulnerability review
-- Plus 6 domain-specific agents (cloud, deployment, devops, docker, session-logger, test-automator)
+### Agents (8) — Operation Goldeneye Roster
+Specialized subagents dispatched for specific tasks:
+- `m` — Strategic planning + architecture decisions
+- `natalya` — Implementation engineer with pragmatic testing
+- `boris` — Security specialist with attacker mindset
+- `trevelyan` — Adversarial code reviewer, challenges assumptions
+- `xenia` — Stress and performance testing specialist
+- `q` — Docker/homelab, Cloudflare Workers, CI/CD
+- `wade` — Project continuity — reads session logs and git history
+- `moneypenny` — Session logging + blog content writing
 
-### Commands (22)
-Explicit workflows:
-- `/plan` - Create implementation plan
-- `/tdd` - Enforce test-first development
-- `/code-review` - Review uncommitted changes
-- Plus 19 specialized commands
-
-### Skills (28)
-Auto-triggered domain expertise:
-- `continuous-learning-v2` - Instinct-based learning
-- `backend-patterns` - Repository pattern, API design
-- `tdd-workflow` - Test-driven development
-- `agent-browser` - Browser automation
-- `deslop` - Remove AI code slop
-- `favicon` - Generate favicon sets
-- `find-skills` - Discover installable skills
-- `knip` - Dead code detection
-- `rams` - Accessibility & design review
-- `reclaude` - Refactor CLAUDE.md files
-- `simplify` - Code simplification
-- `skill-creator` - Skill creation guide (with package/validate scripts)
-- Plus 16 language/framework skills
+### Skills (~35)
+Auto-triggered domain expertise and user-invocable workflows. Key ones:
+- `workspace` — Set up 3-pane cmux session (lazygit + yazi)
+- `continuous-learning-v2` — Instinct-based learning system
+- `agent-browser` — Browser automation (requires `agent-browser` CLI)
+- `backend-patterns` — Repository pattern, service layers, API design
+- `skill-creator` — Guide for creating new skills
+- `find-skills` — Discover installable skills from the community
+- `pr`, `release` — Full git → PR → release workflows
+- `patrol` — Automated health check cycle
+- Language/framework skills: `typescript-pro`, `javascript-pro`, `python-pro`, `golang-pro`, `frontend-developer`, `backend-architect`, `terraform-specialist`, `mcp-builder`
 
 ### Hooks (3)
-Lifecycle automation:
-- `SessionStart` - Restore context, detect package manager
-- `PreCompact` - Save state before compaction
-- `SessionEnd` - Log session to Obsidian vault
+Lifecycle automation that runs without any invocation:
+- `SessionStart` — Restore context, detect package manager
+- `PreCompact` — Save state before context compaction
+- `SessionEnd` — Log session to Obsidian vault
+
+### MCP Servers (4)
+Configured via `mcp.json` (copied from template on install):
+- `memory` — Knowledge graph for cross-session entity/relation storage
+- `filesystem` — File operations
+- `sequential-thinking` — Step-by-step reasoning
+- `task-master-ai` — Task management
+
+## Agent Dispatch Guide
+
+Claude will suggest these proactively, but you can invoke them explicitly too:
+
+| Situation | Agent | Trigger phrases |
+|-----------|-------|----------------|
+| Multi-file feature, no plan yet | **m** | "plan", "design", "how should I build" |
+| Implementing features or fixing bugs | **natalya** | "implement", "build", "fix", "add tests" |
+| About to create a PR or deploy | **trevelyan** + **boris** | "review", "I think this is done" |
+| Auth, secrets, or security-sensitive code | **boris** | "security review", "vulnerabilities" |
+| Docker, CI/CD, Cloudflare, homelab | **q** | "docker", "deploy", "homelab", "build" |
+| Load testing, edge cases, perf analysis | **xenia** | "performance", "what could break", "load test" |
+| Returning to a project after time away | **wade** | "where was I", "catch me up", "brief me" |
+| Session wrap-up or blog material | **moneypenny** | "log session", "blog post" |
 
 ## Installation
 
@@ -60,7 +89,7 @@ cd ~/Code/claude-code-config
 ./install.sh
 ```
 
-This creates symlinks from `~/.claude/` to this repo. Local-only items are preserved.
+This creates symlinks from `~/.claude/` pointing to this repo. Local-only items are preserved.
 
 ### Dry-Run First (Recommended)
 
@@ -87,22 +116,21 @@ Use `--force` to automatically use repo versions (still creates backups).
 Unlike copy-based approaches, this repo uses **symlinks**. The actual files live in the git repo, and `~/.claude/` contains symlinks pointing to them.
 
 **Benefits:**
-- Edits in `~/.claude/` automatically tracked by git
+- Edits in `~/.claude/` are automatically tracked by git
 - `git diff` and `git commit` just work
 - No need to manually copy changes back to repo
 
 **What gets symlinked:**
 - `CLAUDE.md`, `settings.json`, `statusline.sh` (root files)
 - `agents/*.md` (per-file symlinks)
-- `commands/*.md` (per-file symlinks)
 - `rules/*.md` (per-file symlinks)
 - `skills/*/` (per-directory symlinks)
 - `hooks/*.sh` (per-file symlinks)
 
 **What stays local:**
-- `mcp.json` - Copied from template with `$HOME` substitution
-- `settings.local.json` - Machine-specific permissions
-- `.env` - Machine-specific environment variables
+- `mcp.json` — Copied from template with `$HOME` substitution
+- `settings.local.json` — Machine-specific permissions
+- `.env` — Machine-specific environment variables
 
 ## Managing Your Config
 
@@ -123,14 +151,11 @@ Shows status of all items:
 ```bash
 ./sync.sh add skill my-skill
 ./sync.sh add agent my-agent
-./sync.sh add command my-command
 ./sync.sh add rule my-rule
 ./sync.sh add hook my-hook
 ```
 
-Copies item to repo, replaces local with symlink.
-
-Skills are validated before adding - must have SKILL.md with `name` and `description` in frontmatter.
+Copies item to repo and replaces local with a symlink. Skills are validated before adding — must have `SKILL.md` with `name` and `description` in frontmatter.
 
 ### Remove Item from Repo
 
@@ -182,15 +207,6 @@ Preview any command without making changes:
 ./install.sh --dry-run
 ```
 
-## Keeping Items Local-Only
-
-Any item in `~/.claude/` that isn't symlinked stays local. The install script only creates symlinks for what's in this repo—it never deletes local files.
-
-Use this for:
-- Work-specific configurations
-- Experimental features
-- Machine-specific customizations
-
 ## Directory Structure
 
 ```
@@ -198,12 +214,11 @@ claude-code-config/
 ├── install.sh                  # Symlink installer
 ├── sync.sh                     # Sync manager
 ├── CLAUDE.md                   # Global Claude configuration
-├── settings.json               # Portable settings (~ paths)
+├── settings.json               # Portable settings
 ├── statusline.sh               # Status bar script
 ├── agents/                     # Subagent definitions (*.md)
-├── commands/                   # Command definitions (*.md)
 ├── rules/                      # Rule definitions (*.md)
-├── skills/                     # Skill directories
+├── skills/                     # Skill directories (each has SKILL.md)
 ├── hooks/                      # Hook scripts (*.sh)
 ├── .claude/rules/              # Project-level rules (for this repo)
 │   ├── testing.md              # Bats testing conventions
@@ -217,34 +232,14 @@ claude-code-config/
 └── README.md
 ```
 
-## MCP Servers
+## Keeping Items Local-Only
 
-The repo includes a template for 4 MCP servers:
-- `memory` - Knowledge graph for entity/relation storage
-- `filesystem` - File operations
-- `sequential-thinking` - Step-by-step reasoning
-- `task-master-ai` - Task management
+Any item in `~/.claude/` that isn't symlinked stays local. The install script only creates symlinks for what's in this repo — it never deletes local files.
 
-Configured via `mcp.json` (copied from template on install).
-
-## Contributing to This Repo
-
-When adding new components:
-
-1. Add the files to the appropriate directory
-2. Test locally first
-3. Run `./scripts/sanitize-check.sh` to verify no secrets
-4. Commit and push
-5. Run `./sync.sh pull` on other machines
-
-## Security
-
-**NEVER commit:**
-- API keys, tokens, or credentials
-- Session history or personal data
-- Absolute paths with your username
-
-The `sanitize-check.sh` script helps prevent these issues.
+Use this for:
+- Work-specific configurations
+- Experimental or in-progress skills
+- Machine-specific customizations
 
 ## Troubleshooting
 
@@ -266,6 +261,11 @@ ls -la ~/.claude/hooks/
 # Should show -rwxr-xr-x permissions
 ```
 
+If not:
+```bash
+chmod +x ~/.claude/hooks/*.sh
+```
+
 ### Package Manager Detection
 
 Set your preferred package manager:
@@ -275,14 +275,57 @@ echo 'export CLAUDE_PACKAGE_MANAGER=pnpm' >> ~/.zshrc
 source ~/.zshrc
 ```
 
+### MCP Servers Not Connecting
+
+MCP servers run via `npx` — make sure Node.js is installed and `npx` is in your PATH:
+
+```bash
+which npx && npx --version
+```
+
+If `mcp.json` is missing, re-run the installer:
+
+```bash
+./install.sh
+```
+
+### agent-browser Skill Not Working
+
+Install the CLI globally:
+
+```bash
+npm install -g agent-browser
+agent-browser --version
+```
+
+### Workspace Skill Failing
+
+Requires cmux, yazi, and lazygit. Install all three:
+
+```bash
+brew install cmux yazi lazygit
+```
+
+## Security
+
+**Never commit:**
+- API keys, tokens, or credentials
+- Session history or personal data
+- Absolute paths with your username
+
+Run the sanitize check before pushing:
+
+```bash
+./scripts/sanitize-check.sh
+```
+
 ## Tips
 
-- Edit files in `~/.claude/` (they're symlinked to the repo)
+- Edit files in `~/.claude/` directly — they're symlinked to the repo, so changes are tracked automatically
 - Use `./sync.sh` frequently to check status
-- Keep CLAUDE.md concise (<100 lines) - move details to rules files
-- Test skills locally before adding to repo
-- Use meaningful git commit messages
-- Backup before major changes (install script does this automatically)
+- Keep `CLAUDE.md` concise — move detail into rules files
+- Test skills locally before adding to repo with `./sync.sh add`
+- Use meaningful conventional commit messages (`feat:`, `fix:`, `chore:`)
 
 ## License
 
