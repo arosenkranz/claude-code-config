@@ -91,16 +91,16 @@ Rules that override default behavior to prevent common wrong-approach friction:
 - `performance.md`: Model selection guidance (Haiku/Sonnet/Opus)
 
 **Agents** (8 active — Operation Goldeneye roster):
-- `m`: Strategic planning + architecture (merges planner + architect) — triggers on "plan", "design", "approach"
-- `natalya`: Implementation engineer with pragmatic testing (merges tdd-guide + test-automator) — triggers on "implement", "build", "fix"
+- `m`: Strategic planning + architecture + docs generation (merges planner + architect + docs-architect) — triggers on "plan", "design", "approach", "document architecture", "generate docs"
+- `natalya`: Implementation engineer with tests + plan file execution (merges tdd-guide + test-automator + execplan-executor) — triggers on "implement", "build", "fix", "execute the plan", "execplan"
 - `boris`: Security specialist, attacker mindset — triggers on "security review", "vulnerabilities", auth/deploy work
-- `moneypenny`: Session logging + blog content writing — triggers on "log session", "blog post", SessionEnd hook
-- `q`: Docker/homelab, Cloudflare Workers deploy, CI/CD (replaces docker-assistant) — triggers on "docker", "deploy", "homelab"
+- `moneypenny`: Session logging, blog content, and brag doc maintenance (merges session-logger + brag-doc) — triggers on "log session", "blog post", "brag doc", "accomplishments", SessionEnd hook
+- `q`: Docker/homelab, Cloudflare Workers, CI/CD, and incident response (merges docker-assistant + deployment-engineer + devops-troubleshooter + ops-responder) — triggers on "docker", "deploy", "homelab", "incident", "rollback", "troubleshoot"
 - `wade`: Project continuity, reads session logs + git history to brief you — triggers on "where was I", "catch me up"
 - `trevelyan`: Adversarial code reviewer, challenges assumptions + design flaws — triggers on "review", "challenge this", "what am I missing"
 - `xenia`: Stress + performance testing, load scenarios, edge case generation — triggers on "performance", "load test", "what could break"
 - Plus plugin agents (pr-review-toolkit, feature-dev, superpowers)
-- Note: Archived planner, architect, tdd-guide, test-automator, docker-assistant, security-reviewer, session-logger, cloud-architect, deployment-engineer, devops-troubleshooter, code-reviewer
+- Note: Archived planner, architect, tdd-guide, test-automator, docker-assistant, security-reviewer, session-logger, cloud-architect, deployment-engineer, devops-troubleshooter, code-reviewer, brag-doc, execplan-executor, docs-architect, ops-responder
 
 **Agent Dispatch Guidance** (suggest these proactively — don't wait to be asked):
 
@@ -114,6 +114,10 @@ Rules that override default behavior to prevent common wrong-approach friction:
 | Interesting debugging completed | **moneypenny** | "Good debugging session. Blog post material?" |
 | New API endpoint being built | **xenia** | "Want xenia to generate edge cases?" |
 | Auth/secrets code modified | **boris** | "Sensitive code change. Security review?" |
+| Service degradation or errors reported | **q** | "Production issue — want q to run incident response?" |
+| Project completed / milestone shipped | **moneypenny** | "Want moneypenny to scan sessions for brag doc entries?" |
+| Have a plan file to execute | **natalya** | "Want natalya to execute this plan step-by-step?" |
+| Codebase needs documentation | **m** | "Want m to generate architecture docs?" |
 
 **Skills** (~30 active - auto-triggered patterns and user-invoked workflows):
 - `continuous-learning-v2`: Instinct-based learning system
