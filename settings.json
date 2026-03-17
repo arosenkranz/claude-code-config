@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
@@ -64,12 +65,26 @@
       "Bash(gt *)",
       "Bash(cmux *)",
       "Bash(sleep *)",
+      "Bash(kubectl *)",
+      "Bash(cargo *)",
+      "Bash(go *)",
+      "Bash(obsidian *)",
+      "Bash(pgrep *)",
       "Bash(./scripts/sanitize-check.sh *)",
       "Bash(./install.sh *)",
       "Bash(./sync.sh *)",
+      "Read(//Users/alex.rosenkranz/Documents/main-vault/**)",
       "WebSearch",
       "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:docs.astro.build)",
       "WebFetch(domain:docs.claude.ai)",
+      "WebFetch(domain:docs.claude.com)",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:simonwillison.net)",
+      "WebFetch(domain:help.obsidian.md)",
+      "WebFetch(domain:forum.obsidian.md)",
+      "WebFetch(domain:www.howtogeek.com)",
+      "WebFetch(domain:grugbrain.dev)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
@@ -156,6 +171,17 @@
         ]
       }
     ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Ping.aiff"
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [
@@ -194,17 +220,20 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "~/.claude/statusline.sh"
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
   },
+  "outputStyle": "Explanatory",
   "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": true,
     "plugin-dev@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
     "code-review@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": false,
+    "code-simplifier@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,

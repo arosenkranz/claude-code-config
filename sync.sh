@@ -120,9 +120,10 @@ check_status() {
     fi
 
     # Return status
-    if $in_repo && $is_symlink && [[ "$symlink_target" == "$repo_path" ]]; then
+    local symlink_target_norm="${symlink_target%/}"
+    if $in_repo && $is_symlink && [[ "$symlink_target_norm" == "$repo_path" ]]; then
         echo "synced"
-    elif $in_repo && $is_symlink && [[ "$symlink_target" != "$repo_path" ]]; then
+    elif $in_repo && $is_symlink && [[ "$symlink_target_norm" != "$repo_path" ]]; then
         echo "external"
     elif $in_repo && $in_local && ! $is_symlink; then
         echo "conflict"
@@ -152,8 +153,9 @@ show_status() {
     if [ -d "$CONFIG_DIR/skills" ]; then
         for skill_dir in "$CONFIG_DIR/skills"/*/; do
             [ -d "$skill_dir" ] || continue
-            has_skills=true
             local name=$(basename "$skill_dir")
+            [ "$name" = "archived" ] && continue
+            has_skills=true
             local status=$(check_status skill "$name")
             case $status in
                 synced) echo -e "  ${GREEN}✓${RESET} $name" ;;
@@ -313,6 +315,7 @@ validate_all() {
     for skill_dir in "$CONFIG_DIR/skills"/*/; do
         [ -d "$skill_dir" ] || continue
         local name=$(basename "$skill_dir")
+        [ "$name" = "archived" ] && continue
         local result=$(validate_skill "$skill_dir")
         local valid=$(echo "$result" | cut -d'|' -f1)
         local message=$(echo "$result" | cut -d'|' -f2)
