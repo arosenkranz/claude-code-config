@@ -1,3 +1,8 @@
+---
+name: pr
+description: pr
+---
+
 # PR Workflow (/pr)
 
 Encode the full preferred git workflow: branch → commit → push → PR. Invoke with `/pr`.

@@ -1,3 +1,8 @@
+---
+name: patrol
+description: patrol
+---
+
 # Patrol Cycle
 
 Execute a full Gas Town system patrol in sequence without pausing for confirmation between steps. Report a single summary at the end.

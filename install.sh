@@ -265,6 +265,7 @@ main() {
         for skill in "$CONFIG_DIR/skills"/*/; do
             [ -d "$skill" ] || continue
             skill_name=$(basename "$skill")
+            [ "$skill_name" = "archived" ] && continue
             local dest=~/.claude/skills/"$skill_name"
 
             if $DRY_RUN; then

@@ -24,16 +24,21 @@
 ### Transport
 - **Streamable HTTP**: For remote servers, multi-client scenarios
 - **stdio**: For local integrations, command-line tools
+- Avoid SSE (deprecated in favor of streamable HTTP)
 
 ---
 
 ## Server Naming Conventions
+
+Follow these standardized naming patterns:
 
 **Python**: Use format `{service}_mcp` (lowercase with underscores)
 - Examples: `slack_mcp`, `github_mcp`, `jira_mcp`
 
 **Node/TypeScript**: Use format `{service}-mcp-server` (lowercase with hyphens)
 - Examples: `slack-mcp-server`, `github-mcp-server`, `jira-mcp-server`
+
+The name should be general, descriptive of the service being integrated, easy to infer from the task description, and without version numbers.
 
 ---
 
@@ -42,7 +47,7 @@
 ### Tool Naming
 
 1. **Use snake_case**: `search_users`, `create_project`, `get_channel_info`
-2. **Include service prefix**: Anticipate that your MCP server may be used alongside others
+2. **Include service prefix**: Anticipate that your MCP server may be used alongside other MCP servers
    - Use `slack_send_message` instead of just `send_message`
    - Use `github_create_issue` instead of just `create_issue`
 3. **Be action-oriented**: Start with verbs (get, list, search, create, etc.)
@@ -65,11 +70,14 @@ All tools that return data should support multiple formats:
 - Machine-readable structured data
 - Include all available fields and metadata
 - Consistent field names and types
+- Use for programmatic processing
 
 ### Markdown Format (`response_format="markdown"`, typically default)
 - Human-readable formatted text
 - Use headers, lists, and formatting for clarity
 - Convert timestamps to human-readable format
+- Show display names with IDs in parentheses
+- Omit verbose metadata
 
 ---
 
@@ -80,6 +88,7 @@ For tools that list resources:
 - **Always respect the `limit` parameter**
 - **Implement pagination**: Use `offset` or cursor-based pagination
 - **Return pagination metadata**: Include `has_more`, `next_offset`/`next_cursor`, `total_count`
+- **Never load all results into memory**: Especially important for large datasets
 - **Default to reasonable limits**: 20-50 items is typical
 
 Example pagination response:
@@ -102,6 +111,12 @@ Example pagination response:
 
 **Best for**: Remote servers, web services, multi-client scenarios
 
+**Characteristics**:
+- Bidirectional communication over HTTP
+- Supports multiple simultaneous clients
+- Can be deployed as a web service
+- Enables server-to-client notifications
+
 **Use when**:
 - Serving multiple clients simultaneously
 - Deploying as a cloud service
@@ -111,12 +126,26 @@ Example pagination response:
 
 **Best for**: Local integrations, command-line tools
 
+**Characteristics**:
+- Standard input/output stream communication
+- Simple setup, no network configuration needed
+- Runs as a subprocess of the client
+
 **Use when**:
 - Building tools for local development environments
 - Integrating with desktop applications
 - Single-user, single-session scenarios
 
 **Note**: stdio servers should NOT log to stdout (use stderr for logging)
+
+### Transport Selection
+
+| Criterion | stdio | Streamable HTTP |
+|-----------|-------|-----------------|
+| **Deployment** | Local | Remote |
+| **Clients** | Single | Multiple |
+| **Complexity** | Low | Medium |
+| **Real-time** | No | Yes |
 
 ---
 
@@ -127,6 +156,7 @@ Example pagination response:
 **OAuth 2.1**:
 - Use secure OAuth 2.1 with certificates from recognized authorities
 - Validate access tokens before processing requests
+- Only accept tokens specifically intended for your server
 
 **API Keys**:
 - Store API keys in environment variables, never in code
@@ -141,6 +171,20 @@ Example pagination response:
 - Prevent command injection in system calls
 - Use schema validation (Pydantic/Zod) for all inputs
 
+### Error Handling
+
+- Don't expose internal errors to clients
+- Log security-relevant errors server-side
+- Provide helpful but not revealing error messages
+- Clean up resources after errors
+
+### DNS Rebinding Protection
+
+For streamable HTTP servers running locally:
+- Enable DNS rebinding protection
+- Validate the `Origin` header on all incoming connections
+- Bind to `127.0.0.1` rather than `0.0.0.0`
+
 ---
 
 ## Tool Annotations
@@ -153,6 +197,8 @@ Provide annotations to help clients understand tool behavior:
 | `destructiveHint` | boolean | true | Tool may perform destructive updates |
 | `idempotentHint` | boolean | false | Repeated calls with same args have no additional effect |
 | `openWorldHint` | boolean | true | Tool interacts with external entities |
+
+**Important**: Annotations are hints, not security guarantees. Clients should not make security-critical decisions based solely on annotations.
 
 ---
 
@@ -179,3 +225,25 @@ try {
   };
 }
 ```
+
+---
+
+## Testing Requirements
+
+Comprehensive testing should cover:
+
+- **Functional testing**: Verify correct execution with valid/invalid inputs
+- **Integration testing**: Test interaction with external systems
+- **Security testing**: Validate auth, input sanitization, rate limiting
+- **Performance testing**: Check behavior under load, timeouts
+- **Error handling**: Ensure proper error reporting and cleanup
+
+---
+
+## Documentation Requirements
+
+- Provide clear documentation of all tools and capabilities
+- Include working examples (at least 3 per major feature)
+- Document security considerations
+- Specify required permissions and access levels
+- Document rate limits and performance characteristics

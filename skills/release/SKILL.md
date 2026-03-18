@@ -1,3 +1,8 @@
+---
+name: release
+description: release
+---
+
 # Release Workflow (/release)
 
 Extends /pr with semantic versioning, git tags, and optional GitHub release creation. Invoke with `/release`.
