@@ -139,7 +139,6 @@
     "deny": [],
     "defaultMode": "acceptEdits"
   },
-  "model": "opusplan",
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "sequential-thinking",
@@ -257,7 +256,7 @@
   },
   "extraKnownMarketplaces": {},
   "alwaysThinkingEnabled": false,
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "teamDisplay": "cmux",

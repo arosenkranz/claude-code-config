@@ -34,7 +34,7 @@
 #   }
 # }
 
-set -e
+# NOTE: No set -e — hook must always exit 0 to avoid "Hook cancelled" in Claude Code
 
 CONFIG_DIR="${HOME}/.claude/homunculus"
 OBSERVATIONS_FILE="${CONFIG_DIR}/observations.jsonl"
@@ -57,12 +57,13 @@ if [ -z "$INPUT_JSON" ]; then
 fi
 
 # Parse using python (more reliable than jq for complex JSON)
-PARSED=$(python3 << EOF
+PARSED=$(HOOK_INPUT_JSON="$INPUT_JSON" python3 << 'EOF'
 import json
+import os
 import sys
 
 try:
-    data = json.loads('''$INPUT_JSON''')
+    data = json.loads(os.environ['HOOK_INPUT_JSON'])
 
     # Extract fields - Claude Code hook format
     hook_type = data.get('hook_type', 'unknown')  # PreToolUse or PostToolUse
@@ -121,23 +122,24 @@ fi
 # Build and write observation
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-python3 << EOF
+HOOK_PARSED="$PARSED" HOOK_TIMESTAMP="$timestamp" HOOK_OBSERVATIONS_FILE="$OBSERVATIONS_FILE" python3 << 'EOF'
 import json
+import os
 
-parsed = json.loads('''$PARSED''')
+parsed = json.loads(os.environ['HOOK_PARSED'])
 observation = {
-    'timestamp': '$timestamp',
+    'timestamp': os.environ['HOOK_TIMESTAMP'],
     'event': parsed['event'],
     'tool': parsed['tool'],
     'session': parsed['session']
 }
 
-if parsed['input']:
+if parsed.get('input'):
     observation['input'] = parsed['input']
-if parsed['output']:
+if parsed.get('output'):
     observation['output'] = parsed['output']
 
-with open('$OBSERVATIONS_FILE', 'a') as f:
+with open(os.environ['HOOK_OBSERVATIONS_FILE'], 'a') as f:
     f.write(json.dumps(observation) + '\n')
 EOF
 

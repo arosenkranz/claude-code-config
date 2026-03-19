@@ -42,43 +42,22 @@ if [[ -f "$NOTE_FILE" ]] && grep -q "<!-- session:${session_id} -->" "$NOTE_FILE
     exit 0
 fi
 
-# Extract conversation summary using claude
-summary=$(claude -p --model haiku --tools "" --max-budget-usd 0.2 <<EOF
-You are summarizing a Claude Code session transcript for personal notes.
+# Delegate summary generation + SQLite write to Node script
+# The script prints the summary markdown to stdout and handles the DB write
+LOG_SESSION_SCRIPT="$HOME/Code/claude-memory/dist/scripts/log-session.js"
+project_name=$(basename "$cwd")
+project_path="$cwd"
 
-Analyze this transcript and create a concise summary in the following format:
+if [[ -f "$LOG_SESSION_SCRIPT" ]] && command -v node >/dev/null 2>&1; then
+    summary=$(node "$LOG_SESSION_SCRIPT" \
+        --session-id "$session_id" \
+        --transcript "$transcript_path" \
+        --cwd "$cwd" \
+        --hostname "$HOSTNAME" 2>>/tmp/session-logger.log)
+fi
 
-### Session $TIMESTAMP - [Brief Topic in 3-5 words]
-
-**Host**: $HOSTNAME
-**Working Directory**: \`$cwd\`
-
-**Summary**: [1-2 sentences describing what was accomplished]
-
-**Accomplishments**:
-- [Key things completed]
-
-**Learnings**:
-- [New concepts or insights]
-
-**Commands/Code**:
-\`\`\`bash
-# Key commands used (if any)
-\`\`\`
-
-**Next Steps**:
-- [ ] [Follow-up tasks if any]
-
----
-
-Here is the transcript (JSONL format):
-$(cat "$transcript_path" | head -100)
-EOF
-)
-
-# Check if we got a valid summary
-if [[ -z "$summary" || "$summary" == "null" ]]; then
-    # Fallback to a simple log entry
+# Fallback if script unavailable or returned empty
+if [[ -z "$summary" ]]; then
     summary="### Session $TIMESTAMP
 
 **Host**: $HOSTNAME
@@ -94,66 +73,14 @@ fi
 summary="<!-- session:${session_id} -->
 ${summary}"
 
-# Detect project and technologies from working directory
-project_name=$(basename "$cwd")
-project_path="$cwd"
-
-# Detect technologies based on files in directory
+# Build tags for Obsidian frontmatter (tags array still needed for YAML)
 tags=("session")
+[[ -f "$cwd/package.json" ]] && tags+=("javascript")
+[[ -f "$cwd/go.mod" ]] && tags+=("golang")
+[[ -f "$cwd/pyproject.toml" || -f "$cwd/requirements.txt" ]] && tags+=("python")
+[[ -f "$cwd/docker-compose.yml" || -f "$cwd/Dockerfile" ]] && tags+=("docker")
+[[ "$cwd" == *"/Code/"* ]] && tags+=("personal-project") || tags+=("development")
 
-if [[ -f "$cwd/package.json" ]]; then
-    tags+=("javascript")
-
-    # Check for specific frameworks
-    if grep -q "astro" "$cwd/package.json" 2>/dev/null; then
-        tags+=("astro")
-    fi
-    if grep -q "react" "$cwd/package.json" 2>/dev/null; then
-        tags+=("react")
-    fi
-    if grep -q "next" "$cwd/package.json" 2>/dev/null; then
-        tags+=("nextjs")
-    fi
-    if grep -q "typescript" "$cwd/package.json" 2>/dev/null; then
-        tags+=("typescript")
-    fi
-    if grep -q "tailwind" "$cwd/package.json" 2>/dev/null; then
-        tags+=("tailwind")
-    fi
-    if grep -q "vite" "$cwd/package.json" 2>/dev/null; then
-        tags+=("vite")
-    fi
-fi
-
-if [[ -f "$cwd/docker-compose.yml" ]] || [[ -f "$cwd/Dockerfile" ]]; then
-    tags+=("docker")
-fi
-
-if [[ -f "$cwd/terraform.tf" ]] || [[ -d "$cwd/.terraform" ]]; then
-    tags+=("terraform")
-fi
-
-if [[ -f "$cwd/requirements.txt" ]] || [[ -f "$cwd/setup.py" ]] || [[ -f "$cwd/pyproject.toml" ]]; then
-    tags+=("python")
-fi
-
-if [[ -f "$cwd/go.mod" ]]; then
-    tags+=("golang")
-fi
-
-# Detect project type
-project_type=""
-if [[ "$cwd" == *"/Code/"* ]]; then
-    project_type="personal-project"
-elif [[ "$cwd" == *"/homelab/"* ]] || [[ "$cwd" == *"/pi/"* ]]; then
-    project_type="homelab"
-else
-    project_type="development"
-fi
-
-tags+=("$project_type")
-
-# Build tags string for frontmatter
 tags_yaml=""
 for tag in "${tags[@]}"; do
     tags_yaml+="  - $tag"$'\n'
@@ -185,25 +112,10 @@ $summary
 HEADER
 fi
 
-# Also write session summary to SQLite memory DB (dual-write: Obsidian for humans, SQLite for machines)
-MEMORY_DB="${MEMORY_DB_PATH:-$HOME/.claude/memory.db}"
-if [[ -f "$MEMORY_DB" ]] && command -v sqlite3 >/dev/null 2>&1 && [[ -n "$summary" ]]; then
-    PROJECT_NAME=$(basename "$cwd")
-    PROJECT_SCOPE="project:$PROJECT_NAME"
-    ESCAPED_SUMMARY=$(echo "$summary" | head -20 | tr "'" '"')
-    ESCAPED_CWD=$(echo "$cwd" | tr "'" '"')
-
-    sqlite3 "$MEMORY_DB" "
-        INSERT OR IGNORE INTO entities (name, entity_type, scope)
-        VALUES ('$PROJECT_NAME', 'project', '$PROJECT_SCOPE');
-
-        INSERT INTO observations (entity_id, content, source, confidence)
-        SELECT id, 'Session $DATE $TIMESTAMP: $ESCAPED_CWD', 'hook:session-end', 0.9
-        FROM entities WHERE name = '$PROJECT_NAME' AND scope = '$PROJECT_SCOPE';
-    " 2>/dev/null
-fi
-
 # Harvest CLAUDE.md sections into SQLite memory (idempotent via MD5 hash)
+MEMORY_DB="${MEMORY_DB_PATH:-$HOME/.claude/memory.db}"
+PROJECT_NAME=$(basename "$cwd")
+PROJECT_SCOPE="project:$PROJECT_NAME"
 CLAUDE_MD="$cwd/CLAUDE.md"
 if [[ -f "$CLAUDE_MD" ]] && [[ -f "$MEMORY_DB" ]] && command -v sqlite3 >/dev/null 2>&1; then
     CURRENT_HASH=$(md5 -q "$CLAUDE_MD" 2>/dev/null || md5sum "$CLAUDE_MD" 2>/dev/null | cut -d' ' -f1)
