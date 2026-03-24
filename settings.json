@@ -222,14 +222,12 @@
     "command": "~/.claude/statusline.sh",
     "padding": 0
   },
-  "outputStyle": "Explanatory",
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
     "plugin-dev@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
     "code-review@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
@@ -247,14 +245,20 @@
     "claude-code-setup@claude-plugins-official": true,
     "learning-output-style@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
-    "agent-browser@agent-browser": true,
     "hookify@claude-code-plugins": false,
-    "goldeneye-agents@arosenkranz-claude-plugins": false,
-    "learning-system@arosenkranz-claude-plugins": false,
     "workflow-skills@arosenkranz-claude-plugins": false,
-    "language-skills@arosenkranz-claude-plugins": false
+    "appgate@datadog-claude-plugins": true,
+    "cq@cq": true
   },
-  "extraKnownMarketplaces": {},
+  "extraKnownMarketplaces": {
+    "cq": {
+      "source": {
+        "source": "github",
+        "repo": "mozilla-ai/cq"
+      }
+    }
+  },
+  "outputStyle": "Explanatory",
   "alwaysThinkingEnabled": false,
   "effortLevel": "high",
   "voiceEnabled": true,
