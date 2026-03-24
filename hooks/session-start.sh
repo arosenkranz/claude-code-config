@@ -226,37 +226,6 @@ main() {
         echo "[SessionStart] Use /sessions load <alias> to continue a previous session" >&2
     fi
 
-    # Memory briefing from SQLite
-    MEMORY_DB="${MEMORY_DB_PATH:-$HOME/.claude/memory.db}"
-    if [[ -f "$MEMORY_DB" ]] && command -v sqlite3 >/dev/null 2>&1; then
-        CWD_PATH="${PWD:-$HOME}"
-        PROJECT_SCOPE=""
-        if [[ "$CWD_PATH" == */Code/* ]]; then
-            PROJECT_NAME=$(echo "$CWD_PATH" | sed 's|.*/Code/||' | cut -d'/' -f1)
-            PROJECT_SCOPE="project:$PROJECT_NAME"
-        fi
-
-        if [[ -n "$PROJECT_SCOPE" ]]; then
-            RECENT=$(sqlite3 "$MEMORY_DB" "SELECT e.name || ' (' || e.entity_type || '): ' || o.content FROM observations o JOIN entities e ON e.id = o.entity_id WHERE e.scope = '$PROJECT_SCOPE' AND o.created_at > strftime('%s','now','-7 days') ORDER BY o.created_at DESC LIMIT 10;" 2>/dev/null)
-            if [[ -n "$RECENT" ]]; then
-                echo "[Memory] Recent context for $PROJECT_SCOPE:" >&2
-                echo "$RECENT" | while IFS= read -r line; do echo "[Memory]   * $line" >&2; done
-            fi
-        fi
-
-        GLOBALS=$(sqlite3 "$MEMORY_DB" "SELECT e.name || ' (' || e.entity_type || '): ' || o.content FROM observations o JOIN entities e ON e.id = o.entity_id WHERE e.scope = 'global' AND o.confidence >= 0.8 ORDER BY o.confidence DESC, o.created_at DESC LIMIT 5;" 2>/dev/null)
-        if [[ -n "$GLOBALS" ]]; then
-            echo "[Memory] Key global context:" >&2
-            echo "$GLOBALS" | while IFS= read -r line; do echo "[Memory]   * $line" >&2; done
-        fi
-
-        EXPIRING=$(sqlite3 "$MEMORY_DB" "SELECT e.name || ': ' || o.content || ' (expires ' || date(o.expires_at,'unixepoch') || ')' FROM observations o JOIN entities e ON e.id = o.entity_id WHERE o.expires_at IS NOT NULL AND o.expires_at < strftime('%s','now','+7 days') AND o.expires_at > strftime('%s','now') ORDER BY o.expires_at ASC LIMIT 5;" 2>/dev/null)
-        if [[ -n "$EXPIRING" ]]; then
-            echo "[Memory] Expiring soon:" >&2
-            echo "$EXPIRING" | while IFS= read -r line; do echo "[Memory]   ! $line" >&2; done
-        fi
-    fi
-
     # Hint wade when uncommitted work exists
     if git -C "$PWD" rev-parse --git-dir >/dev/null 2>&1; then
         if git -C "$PWD" status --porcelain 2>/dev/null | grep -q '^'; then
