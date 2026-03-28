@@ -134,11 +134,13 @@
       "Skill(commit-commands:commit-push-pr)",
       "Bash(~/.claude/skills/continuous-learning-v2/hooks/observe.sh pre *)",
       "Bash(~/.claude/hooks/session-start.sh *)",
-      "Bash(~/.claude/hooks/pre-compact.sh)"
+      "Bash(~/.claude/hooks/pre-compact.sh)",
+      "Bash(~/.claude/hooks/pre-commit-lint.sh)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
   },
+  "model": "opus",
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "sequential-thinking",
@@ -194,6 +196,16 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"$TOOL_INPUT\" | grep -q \"git commit\" && ~/.claude/hooks/pre-commit-lint.sh || true'",
+            "timeout": 30
+          }
+        ]
+      },
+      {
         "matcher": "*",
         "hooks": [
           {
@@ -232,7 +244,7 @@
     "feature-dev@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
@@ -260,11 +272,12 @@
   },
   "outputStyle": "Explanatory",
   "alwaysThinkingEnabled": false,
-  "effortLevel": "high",
   "voiceEnabled": true,
+  "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "teamDisplay": "cmux",
   "_note_hooks": "PreToolUse/PostToolUse/SessionStart/PreCompact above are kept for local skill symlinks. When learning-system plugin is installed, these can be removed (plugin hooks.json handles them via CLAUDE_PLUGIN_ROOT).",
   "bypassPermissions": true,
-  "disableBypassPermissionsMode": false
+  "disableBypassPermissionsMode": false,
+  "effortLevel": "high"
 }

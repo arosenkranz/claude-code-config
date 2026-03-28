@@ -65,9 +65,9 @@ Rules that override default behavior to prevent common wrong-approach friction:
 
 1. **Git workflow default** — Always create a feature branch and PR unless explicitly told to commit directly to main. Never commit directly to main by default. Use `gh pr create` for all PRs.
 
-2. **Implementation-first default** — When asked to implement changes, start coding immediately. Skip planning documents unless explicitly asked. If planning is needed, keep it brief (bullet list only) and move to implementation within the same response.
+2. **Implementation-first default** — When asked to implement changes, start coding immediately. Skip planning documents unless explicitly asked. If planning is needed, keep it to 3 bullet points max, then start coding in the same response. If you catch yourself writing more than 3 bullets without being asked to plan, stop and implement.
 
-3. **Cloudflare deploy target** — This project deploys to Cloudflare Workers, not Cloudflare Pages. Use Astro server endpoints (not `functions/` directory). Ensure endpoints are NOT statically prerendered when they need runtime env vars.
+3. **Cloudflare deploy target** — Projects (especially KranzTV) deploy to Cloudflare Workers, not Cloudflare Pages. This means: no Node.js runtime APIs (no `fs`, `path`, `crypto` from Node, no `dd-trace`), ESM imports only (no `require()` or `createRequire`), Web Platform APIs only (`fetch`, `Request`, `Response`, `crypto.subtle`). Use Astro server endpoints (not `functions/` directory). Ensure endpoints are NOT statically prerendered when they need runtime env vars.
 
 4. **Non-interactive shell commands** — When running install scripts, package managers, or CLIs that may prompt for input, always add non-interactive flags: `--yes`, `--force`, `-y`, `--non-interactive`. Claude cannot respond to interactive prompts.
 
