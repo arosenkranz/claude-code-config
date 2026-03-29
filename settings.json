@@ -135,7 +135,10 @@
       "Bash(~/.claude/skills/continuous-learning-v2/hooks/observe.sh pre *)",
       "Bash(~/.claude/hooks/session-start.sh *)",
       "Bash(~/.claude/hooks/pre-compact.sh)",
-      "Bash(~/.claude/hooks/pre-commit-lint.sh)"
+      "Bash(~/.claude/hooks/pre-commit-lint.sh)",
+      "Bash(~/.claude/hooks/config-protection.sh)",
+      "Bash(~/.claude/hooks/post-edit-format.sh *)",
+      "Bash(~/.claude/hooks/check-console-log.sh)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
@@ -145,7 +148,11 @@
   "enabledMcpjsonServers": [
     "sequential-thinking",
     "filesystem",
-    "memory"
+    "memory",
+    "cloudflare-docs",
+    "cloudflare-workers-builds",
+    "cloudflare-workers-bindings",
+    "cloudflare-observability"
   ],
   "hooks": {
     "SessionStart": [
@@ -183,6 +190,19 @@
         ]
       }
     ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cost-tracker.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [
@@ -206,6 +226,16 @@
         ]
       },
       {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/config-protection.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
         "matcher": "*",
         "hooks": [
           {
@@ -217,6 +247,27 @@
       }
     ],
     "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/post-edit-format.sh",
+            "timeout": 15,
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/check-console-log.sh",
+            "timeout": 5
+          }
+        ]
+      },
       {
         "matcher": "*",
         "hooks": [
