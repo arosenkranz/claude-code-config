@@ -155,26 +155,13 @@
     "cloudflare-observability"
   ],
   "hooks": {
-    "SessionStart": [
+    "Notification": [
       {
         "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/session-start.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/pre-compact.sh",
-            "timeout": 10
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
           }
         ]
       }
@@ -240,8 +227,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/skills/continuous-learning-v2/hooks/observe.sh pre",
-            "timeout": 5
+            "command": "python3 ~/.claude/hooks/claude-island-state.py",
+            "timeout": 86400
           }
         ]
       }
@@ -277,6 +264,135 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pre-compact.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      },
+      {
+        "matcher": "manual",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/continuous-learning-v2/hooks/observe.sh pre",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-logger.sh",
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-start.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/claude-island-state.py"
+          }
+        ]
       }
     ]
   },
@@ -286,32 +402,32 @@
     "padding": 0
   },
   "enabledPlugins": {
-    "clangd-lsp@claude-plugins-official": true,
-    "context7@claude-plugins-official": false,
-    "frontend-design@claude-plugins-official": true,
-    "plugin-dev@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": false,
-    "typescript-lsp@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
     "agent-sdk-dev@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": true,
-    "greptile@claude-plugins-official": false,
+    "appgate@datadog-claude-plugins": true,
+    "clangd-lsp@claude-plugins-official": true,
     "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
+    "cq@cq": true,
+    "explanatory-output-style@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "greptile@claude-plugins-official": false,
+    "hookify@claude-code-plugins": false,
+    "hookify@claude-plugins-official": true,
     "learning-output-style@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
-    "hookify@claude-code-plugins": false,
-    "workflow-skills@arosenkranz-claude-plugins": false,
-    "appgate@datadog-claude-plugins": true,
-    "cq@cq": true
+    "plugin-dev@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": false,
+    "security-guidance@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "workflow-skills@arosenkranz-claude-plugins": false
   },
   "extraKnownMarketplaces": {
     "cq": {
@@ -326,9 +442,10 @@
   "voiceEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "teamDisplay": "cmux",
   "_note_hooks": "PreToolUse/PostToolUse/SessionStart/PreCompact above are kept for local skill symlinks. When learning-system plugin is installed, these can be removed (plugin hooks.json handles them via CLAUDE_PLUGIN_ROOT).",
   "bypassPermissions": true,
   "disableBypassPermissionsMode": false,
-  "effortLevel": "high"
+  "effortLevel": "high",
+  "teamDisplay": "cmux",
+  "model": "opusplan"
 }

@@ -6,7 +6,14 @@ CLAUDE_DIR="$HOME/.claude"
 SESSIONS_DIR="$CLAUDE_DIR/sessions"
 LEARNED_SKILLS_DIR="$CLAUDE_DIR/skills/learned"
 ALIASES_FILE="$CLAUDE_DIR/session-aliases.json"
-CONFIG_REPO="$HOME/Code/claude-code-config"
+# Auto-detect config repo location (supports ~/Code and ~/workspace)
+CONFIG_REPO=""
+for candidate in "$HOME/Code/claude-code-config" "$HOME/workspace/claude-code-config"; do
+    if [[ -d "$candidate" ]]; then
+        CONFIG_REPO="$candidate"
+        break
+    fi
+done
 
 # Sync a ~/.claude/<component> directory with its config repo counterpart.
 # Works for both directory-based items (skills) and file-based items (agents, hooks).
