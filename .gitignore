@@ -15,17 +15,16 @@ telemetry/
 file-history/
 stats-cache.json
 
-# Plugin installations (reinstall on each machine)
-plugins/
+# Plugin installations (local plugin cache, not the repo's plugins/ directory)
 installed_plugins.json
 
 # Machine-specific files (never tracked — each machine maintains its own)
-CLAUDE.md             # Machine-specific identity, paths, context
-settings.json         # Runtime config (model, effort, plugins, permissions)
-mcp.json              # Copied from mcp.json.template by install script
-settings.local.json   # Machine-specific permissions
-.env                  # Machine-specific environment variables
-*.local.md            # Machine-specific plugin settings
+CLAUDE.md
+settings.json
+mcp.json
+settings.local.json
+.env
+*.local.md
 
 # Python artifacts
 __pycache__/
