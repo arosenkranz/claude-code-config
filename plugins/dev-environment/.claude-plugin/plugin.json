@@ -1,5 +1,5 @@
 {
   "name": "dev-environment",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core dev automation — lifecycle hooks, coding standards, and Claude Island integration"
 }
