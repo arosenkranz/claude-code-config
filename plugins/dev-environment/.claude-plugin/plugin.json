@@ -1,5 +1,7 @@
 {
   "name": "dev-environment",
-  "description": "Core dev automation — lifecycle hooks, coding standards, statusline, guardrails, and Claude Island integration",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "Core dev automation — lifecycle hooks, coding standards, and Claude Island integration",
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks.json"
 }

@@ -1,9 +1,26 @@
 {
   "name": "arosenkranz-claude-plugins",
-  "description": "Alex Rosenkranz's Claude Code marketplace — skills, agents, and dev environment automation",
+  "owner": {
+    "name": "Alex Rosenkranz"
+  },
+  "metadata": {
+    "description": "Alex Rosenkranz's Claude Code marketplace — skills, agents, and dev environment automation"
+  },
   "plugins": [
-    "plugins/workflow-skills",
-    "plugins/goldeneye-agents",
-    "plugins/dev-environment"
+    {
+      "name": "workflow-skills",
+      "source": "./plugins/workflow-skills",
+      "description": "92 productivity skills for Claude Code — invocable via /name"
+    },
+    {
+      "name": "goldeneye-agents",
+      "source": "./plugins/goldeneye-agents",
+      "description": "Operation Goldeneye — 9 specialized subagents (boris, m, natalya, trevelyan, xenia, q, wade, moneypenny, jira-manager)"
+    },
+    {
+      "name": "dev-environment",
+      "source": "./plugins/dev-environment",
+      "description": "Lifecycle hooks, coding standards, and Claude Island integration"
+    }
   ]
 }

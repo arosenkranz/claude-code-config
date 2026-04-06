@@ -1,5 +1,7 @@
 {
   "name": "workflow-skills",
-  "description": "91+ productivity skills for Claude Code — invocable via /name (morning-plan, course-review, doc-generate, etc.)",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "92 productivity skills for Claude Code — invocable via /name (morning-plan, course-review, doc-generate, etc.)",
+  "skills": "./skills/",
+  "commands": "./commands/"
 }
