@@ -42,32 +42,16 @@ if [[ -f "$NOTE_FILE" ]] && grep -q "<!-- session:${session_id} -->" "$NOTE_FILE
     exit 0
 fi
 
-# Delegate summary generation to Node script
-# The script prints the summary markdown to stdout
-LOG_SESSION_SCRIPT="$HOME/Code/claude-memory/dist/scripts/log-session.js"
 project_name=$(basename "$cwd")
 project_path="$cwd"
 
-if [[ -f "$LOG_SESSION_SCRIPT" ]] && command -v node >/dev/null 2>&1; then
-    summary=$(node "$LOG_SESSION_SCRIPT" \
-        --session-id "$session_id" \
-        --transcript "$transcript_path" \
-        --cwd "$cwd" \
-        --hostname "$HOSTNAME" 2>>/tmp/session-logger.log)
-fi
-
-# Fallback if script unavailable or returned empty
-if [[ -z "$summary" ]]; then
-    summary="### Session $TIMESTAMP
+summary="### Session $TIMESTAMP
 
 **Host**: $HOSTNAME
 **Working Directory**: \`$cwd\`
 **Session ID**: \`$session_id\`
 
-*Auto-logged session - summary generation failed*
-
 ---"
-fi
 
 # Prepend session_id marker for deduplication (hidden in Obsidian)
 summary="<!-- session:${session_id} -->
