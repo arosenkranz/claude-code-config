@@ -1,14 +1,27 @@
 {
-  "hooks": {
-    "SessionStart": "${CLAUDE_CONFIG_DIR}/hooks/session-start.sh",
-    "PreCompact": "${CLAUDE_CONFIG_DIR}/hooks/pre-compact.sh",
-    "SessionEnd": "${CLAUDE_CONFIG_DIR}/hooks/session-logger.sh"
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": ""
   },
-  "plugins": {
-    "discoveryPaths": [
-      "${CLAUDE_CONFIG_DIR}/plugins"
-    ],
-    "enabledPlugins": []
+  "permissions": {
+    "allow": [],
+    "deny": [],
+    "defaultMode": "auto"
   },
-  "attributionEnabled": false
+  "enableAllProjectMcpServers": true,
+  "extraKnownMarketplaces": {
+    "arosenkranz-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "arosenkranz/claude-code-config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "workflow-skills@arosenkranz-claude-plugins": true,
+    "goldeneye-agents@arosenkranz-claude-plugins": true,
+    "dev-environment@arosenkranz-claude-plugins": true
+  },
+  "_comment": "Hooks are defined per-plugin in hooks.json — do not add hooks here. Customize permissions, model, outputStyle, etc. per machine."
 }

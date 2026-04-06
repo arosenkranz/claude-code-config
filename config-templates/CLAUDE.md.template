@@ -1,0 +1,44 @@
+# CLAUDE.md - Development Environment
+
+## About Me
+<!-- Customize: your name, role, and what you use this machine for -->
+
+## Identity & Context
+<!-- Optional: named agent identity, automation stack context -->
+<!-- Example: This system uses a named agent identity ('Deacon'). -->
+
+## Development Setup
+
+### Primary Languages & Frameworks
+<!-- List your languages and frameworks -->
+
+### Project Structure
+<!-- Where do your projects live? e.g., ~/Code, ~/workspace -->
+- All projects live in `~/Code`
+- Version control: GitHub
+
+### Development Tools
+- **Linting/Formatting**: ESLint, Prettier (or language-specific tooling)
+- **Testing**: Open to recommendations based on project needs
+- **GitHub**: GitHub CLI (`gh`) for PR/issue management
+- **Platform**: macOS (Darwin)
+
+## Working Style
+- Prefer explanations and guidance to help me learn
+- Like to understand the "why" behind solutions
+- Open to trying new tools and approaches
+
+## Guardrails
+
+Rules that override default behavior to prevent common wrong-approach friction:
+
+1. **Git workflow default** — Always create a feature branch and PR unless explicitly told to commit directly to main.
+
+2. **Implementation-first default** — When asked to implement changes, start coding immediately. Skip planning documents unless explicitly asked.
+
+3. **Non-interactive shell commands** — Always add non-interactive flags: `--yes`, `--force`, `-y`, `--non-interactive`.
+
+## Gotchas
+
+- Agents, skills, rules, and hooks are **auto-discovered** from `~/.claude/` — do not manually catalog them in this file
+- `bypassPermissions` is enabled but compound shell commands may still trigger permission prompts

@@ -19,7 +19,9 @@ stats-cache.json
 plugins/
 installed_plugins.json
 
-# Machine-specific files
+# Machine-specific files (never tracked — each machine maintains its own)
+CLAUDE.md             # Machine-specific identity, paths, context
+settings.json         # Runtime config (model, effort, plugins, permissions)
 mcp.json              # Copied from mcp.json.template by install script
 settings.local.json   # Machine-specific permissions
 .env                  # Machine-specific environment variables
