@@ -1,6 +1,5 @@
 {
   "name": "goldeneye-agents",
   "version": "1.0.0",
-  "description": "Operation Goldeneye agent roster — 9 specialized subagents (boris, m, moneypenny, natalya, q, trevelyan, wade, xenia, jira-manager)",
-  "agents": "./agents/"
+  "description": "Operation Goldeneye agent roster — 9 specialized subagents (boris, m, moneypenny, natalya, q, trevelyan, wade, xenia, jira-manager)"
 }
