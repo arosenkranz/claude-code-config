@@ -1,0 +1,9 @@
+{
+  "name": "arosenkranz-claude-plugins",
+  "description": "Alex Rosenkranz's Claude Code marketplace — skills, agents, and dev environment automation",
+  "plugins": [
+    "plugins/workflow-skills",
+    "plugins/goldeneye-agents",
+    "plugins/dev-environment"
+  ]
+}
