@@ -1,127 +1,79 @@
 # Workflows
 
+## Architecture
+
+This repo is a Claude Code marketplace with 3 plugins:
+- `workflow-skills` — 92 skills invocable via `/name`
+- `goldeneye-agents` — 9 specialized subagents
+- `dev-environment` — lifecycle hooks, commands (coding standards), Claude Island
+
+Plugins auto-discover their content via `${CLAUDE_PLUGIN_ROOT}`. No symlinks needed.
+
 ## Setting up on a new machine
 
 ```bash
-git clone git@github.com:yourusername/claude-code-config.git ~/Code/claude-code-config
-cd ~/Code/claude-code-config
-./install.sh
+git clone git@github.com:arosenkranz/claude-code-config.git ~/workspace/claude-code-config
 ```
 
-Creates symlinks from `~/.claude/` to this repo. Local-only items are preserved.
+Add to `~/.claude/settings.json`:
+```json
+{
+  "extraKnownMarketplaces": {
+    "arosenkranz-claude-plugins": {
+      "source": { "source": "github", "repo": "arosenkranz/claude-code-config" }
+    }
+  },
+  "enabledPlugins": {
+    "workflow-skills@arosenkranz-claude-plugins": true,
+    "goldeneye-agents@arosenkranz-claude-plugins": true,
+    "dev-environment@arosenkranz-claude-plugins": true
+  }
+}
+```
 
-### Dry-run mode
+Copy and customize CLAUDE.md:
+```bash
+cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
+```
 
-Preview what would happen without making changes:
+## Migrating from old symlink setup
 
 ```bash
-./install.sh --dry-run
+./scripts/migrate-to-marketplace.sh --dry-run   # Preview
+./scripts/migrate-to-marketplace.sh             # Run
+./scripts/migrate-to-marketplace.sh --restore   # Rollback if needed
 ```
 
-### Handling conflicts
+## Adding a new skill
 
-If a local file differs from the repo version, you'll be prompted:
-- `[r]` Use repo version (backs up local first)
-- `[l]` Keep local version (skip this item)
-- `[d]` Show diff between versions
-- `[q]` Quit
+1. Create `plugins/workflow-skills/skills/<name>/SKILL.md` with `name` and `description` frontmatter
+2. Add any references, templates, or scripts in the same directory
+3. The skill is immediately discoverable via `/name` — no registration needed
 
-Use `--force` to automatically use repo versions (still creates backups).
+## Adding a new agent
 
-## Sync status legend
+1. Create `plugins/goldeneye-agents/agents/<name>.md`
+2. Include the agent's system prompt and trigger conditions
+3. Auto-discovered — no registration needed
+
+## Adding or modifying hooks
+
+Edit `plugins/dev-environment/hooks/hooks.json` directly. The `${CLAUDE_PLUGIN_ROOT}` variable resolves to the plugin directory at runtime.
+
+## Coding standards
+
+Standards live in `plugins/dev-environment/commands/` and are:
+- Invocable on-demand: `/dev-environment:coding-style`
+- Symlinked to `~/.claude/rules/` by the migration script for always-active enforcement
+
+## Local-only files (never tracked by git)
+
+- `~/.claude/settings.json` — managed locally, runtime mutations never dirty the repo
+- `~/.claude/CLAUDE.md` — machine-specific identity and context
+
+## Running tests
 
 ```bash
-./sync.sh
-```
-
-Shows status grouped by type (Skills, Agents, Commands, Rules, Hooks):
-
-- `✓` synced (symlinked to this repo)
-- `○` local only (not in repo)
-- `⚠` conflict (exists in both - run `./install.sh` to fix)
-- `→` external (symlinked elsewhere)
-
-## Adding items to sync across machines
-
-```bash
-./sync.sh add skill <name>   # Add a skill directory
-./sync.sh add agent <name>   # Add an agent file (without .md extension)
-./sync.sh add command <name> # Add a command file (without .md extension)
-./sync.sh add rule <name>    # Add a rule file (without .md extension)
-./sync.sh add hook <name>    # Add a hook file (without .sh extension)
-./sync.sh push
-```
-
-Copies the item to repo, replaces local with symlink, prompts for commit.
-
-Skills are validated before adding - must have SKILL.md with `name` and `description` in frontmatter.
-
-## Removing items from repo
-
-```bash
-./sync.sh remove skill <name>
-./sync.sh remove agent <name>
-./sync.sh remove command <name>
-./sync.sh remove rule <name>
-./sync.sh remove hook <name>
-./sync.sh push
-```
-
-Removes from repo but keeps local copy.
-
-## Backups and undo
-
-All destructive operations create timestamped backups in `.backup/`.
-
-```bash
-./sync.sh backups            # List available backups
-./sync.sh undo               # Restore from last backup
-./sync.sh undo --dry-run     # Preview what would be restored
-```
-
-## Validating skills
-
-Check that all skills have valid SKILL.md files:
-
-```bash
-./sync.sh validate
-```
-
-Skills must have frontmatter with `name` and `description`:
-
-```yaml
----
-name: my-skill
-description: What this skill does
----
-```
-
-## Dry-run mode
-
-Preview any command without making changes:
-
-```bash
-./sync.sh --dry-run add skill my-skill
-./sync.sh -n remove agent my-agent
-./install.sh --dry-run
-```
-
-## Keeping items local-only
-
-Any item in `~/.claude/` that isn't symlinked stays local. The install script only creates symlinks for what's in this repo—it never deletes local files.
-
-Use this for work-specific or experimental items.
-
-## Directory structure
-
-```
-~/.claude/
-├── skills/          # Skill directories (each has SKILL.md)
-├── agents/          # Subagent markdown files
-├── commands/        # Command markdown files
-├── rules/           # Rule markdown files
-├── hooks/           # Hook shell scripts
-├── CLAUDE.md
-├── settings.json
-└── statusline.sh
+bats tests/                             # All tests
+bats tests/migrate-to-marketplace.bats  # Migration script tests
 ```
