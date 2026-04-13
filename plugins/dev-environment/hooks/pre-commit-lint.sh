@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # pre-commit-lint.sh — Runs lint (and optionally typecheck) before git commit.
-# Triggered via PreToolUse hook matching Bash calls containing "git commit".
+# Triggered via PreToolUse hook with "if": "Bash(git commit*)" filter.
 # Exits non-zero to block the commit if lint fails.
 
 set -euo pipefail
 
-# Only run if we're in a directory with a package.json that has a lint script
-if [[ ! -f "package.json" ]]; then
+# Walk up to find project root (where package.json lives)
+dir="$PWD"
+while [[ "$dir" != "/" ]]; do
+  [[ -f "$dir/package.json" ]] && break
+  dir=$(dirname "$dir")
+done
+if [[ ! -f "$dir/package.json" ]]; then
   exit 0
 fi
+cd "$dir"
 
 has_script() {
   node -e "const p=require('./package.json'); process.exit(p.scripts?.['$1'] ? 0 : 1)" 2>/dev/null
