@@ -250,3 +250,93 @@ Typical ticket progression:
 5. **Done** - Completed and verified
 
 Always update ticket status as work progresses.
+
+## MCP-Based Ticket Creation
+
+When creating tickets programmatically via the Atlassian MCP (`mcp__atlassian__createJiraIssue`), use these settled values and patterns.
+
+### Fixed Parameters for TRAIN
+
+* **cloudId**: `datadoghq.atlassian.net` (pass the hostname directly; avoids the extra `getAccessibleAtlassianResources` round-trip)
+* **projectKey**: `TRAIN`
+* **issueTypeName**: `Task` is the team default. Epics (`Epic`) are reserved for quarterly strategic containers (e.g., `2026Q2-5.2 [P1] PLAT ...`). Do not create Stories unless a specific report depends on that type.
+
+### Custom Field IDs (TRAIN project)
+
+| Field | ID | Schema | Wire Format |
+|---|---|---|---|
+| Definition of Done | `customfield_11875` | `textarea` | **ADF required** (schema lies) |
+| Epic Link (legacy) | `customfield_10014` | any | Prefer `parent` instead |
+| Story point estimate | `customfield_10016` | number | Plain number |
+| Start date | `customfield_10015` | date | ISO date string |
+
+**Critical quirk:** `customfield_11875` (Definition of Done) reports schema type `string` / `textarea` in metadata, but the actual API requires Atlassian Document Format. Sending a plain string produces:
+```
+"Operation value must be an Atlassian Document (see the Atlassian Document Format)"
+```
+
+### ADF Wrapper for Definition of Done
+
+Wrap DoD bullets in this structure:
+
+```json
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Your DoD criterion here" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Parenting to an Epic
+
+Use the system `parent` field, not `Epic Link`:
+
+```json
+"additional_fields": {
+  "parent": { "key": "TRAIN-3948" },
+  "priority": { "name": "Medium" },
+  "labels": ["cet-ops"],
+  "customfield_11875": { /* ADF doc from above */ }
+}
+```
+
+The `description` field accepts markdown when `contentFormat: "markdown"` is set — but this does **not** extend to custom fields, which still need pre-formed ADF.
+
+### Linking Dependencies
+
+Use `mcp__atlassian__createIssueLink` with type `Blocks`.
+
+**Semantics (easy to get backwards):**
+* `inwardIssue` = the blocker
+* `outwardIssue` = the blocked issue
+
+So "A blocks B" → `inwardIssue: A, outwardIssue: B`.
+
+### Recommended Flow for Multi-Ticket Epic Breakdown
+
+1. Fetch the epic with `getJiraIssue` and narrow `fields` to avoid giant payloads (e.g., `["summary", "description", "status", "issuetype", "labels", "parent"]`).
+2. Use `AskUserQuestion` to settle scope, ownership, ticket shape, and supporting work before drafting.
+3. Draft each ticket (summary, description, DoD) and surface them to the user for review *before* creation.
+4. Create tickets in parallel once approved (they're independent).
+5. Create `Blocks` links between them sequentially or in parallel after all keys return.
+
+### Minimal Verified Example
+
+See the TRAIN-3975 / 3976 / 3977 trio (created under TRAIN-3948) for a working reference: all three were created with parent, priority, labels, and ADF-wrapped DoD in a single `createJiraIssue` call each.
