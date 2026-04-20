@@ -282,3 +282,13 @@ v2 is fully compatible with v1:
 ---
 
 *Instinct-based learning: teaching Claude your patterns, one observation at a time.*
+
+## Instincts
+
+Sub-commands for managing the instinct system. The implementing agent loads these on demand.
+
+| Sub-file | Invokable as | Purpose |
+|---|---|---|
+| `instincts/export.md` | `/instinct-export` | Export instincts for sharing with others |
+| `instincts/import.md` | `/instinct-import` | Import instincts from an export file |
+| `instincts/status.md` | `/instinct-status` | Show all learned instincts with confidence scores |
