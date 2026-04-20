@@ -1,6 +1,6 @@
 ---
 name: pr
-description: pr
+description: "Git PR workflow: branch, commit with conventional message, push, open PR. Trigger phrases: 'open a PR', 'create pull request', 'push for review'."
 ---
 
 # PR Workflow (/pr)

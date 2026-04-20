@@ -1,6 +1,6 @@
 ---
 name: patrol
-description: patrol
+description: "Full Gas Town system patrol: hooks → inboxes → convoys → worker pools → cleanup → health check. Trigger phrases: 'run patrol', 'patrol cycle', 'system health check'."
 ---
 
 # Patrol Cycle

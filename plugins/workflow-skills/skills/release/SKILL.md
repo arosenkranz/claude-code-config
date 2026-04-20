@@ -1,6 +1,6 @@
 ---
 name: release
-description: release
+description: "Semantic-version release: extends pr with version bump, tag, GitHub release. Trigger phrases: 'cut a release', 'publish a release', 'tag a version'."
 ---
 
 # Release Workflow (/release)
