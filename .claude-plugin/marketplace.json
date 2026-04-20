@@ -10,12 +10,37 @@
     {
       "name": "workflow-skills",
       "source": "./plugins/workflow-skills",
-      "description": "92 productivity skills for Claude Code — invocable via /name"
+      "description": "Daily-driver workflow skills — workspace, planning (morning/end-of-day/weekly), task lifecycle (start-task, patrol, capture), skill meta-tools (find-skills, improve-skills, skill-creator, mcp-builder), and cross-cutting utilities (pdf, xlsx, evolve, optimize, search-first)"
+    },
+    {
+      "name": "writing-and-docs",
+      "source": "./plugins/writing-and-docs",
+      "description": "Technical writing and documentation — language idioms, reference docs, tutorials, API/architecture docs, brand guidelines, brag docs"
+    },
+    {
+      "name": "git-and-pr",
+      "source": "./plugins/git-and-pr",
+      "description": "Git and PR automation — address-pr-feedback, release, worktree management, ship, refine, pin-actions"
+    },
+    {
+      "name": "obsidian-and-notes",
+      "source": "./plugins/obsidian-and-notes",
+      "description": "Obsidian, vault search, and the continuous-learning instinct system"
+    },
+    {
+      "name": "web-and-frontend",
+      "source": "./plugins/web-and-frontend",
+      "description": "Frontend and web — Astro, frontend-developer, canvas-design, theme-factory, webapp-testing, agent-browser, rams, algorithmic-art"
+    },
+    {
+      "name": "backend-and-infra",
+      "source": "./plugins/backend-and-infra",
+      "description": "Backend, infra, and language skills — api-scaffold, docker, terraform, deploy, homelab, language pros, test harnesses, TDD"
     },
     {
       "name": "goldeneye-agents",
       "source": "./plugins/goldeneye-agents",
-      "description": "Operation Goldeneye — 9 specialized subagents (boris, m, natalya, trevelyan, xenia, q, wade, moneypenny, jira-manager)"
+      "description": "Operation Goldeneye — 8 specialized subagents (boris, m, natalya, trevelyan, xenia, q, wade, moneypenny)"
     },
     {
       "name": "dev-environment",

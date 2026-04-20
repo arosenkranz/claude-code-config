@@ -151,7 +151,7 @@ assert 'arosenkranz-claude-plugins' in data.get('extraKnownMarketplaces', {}), '
     [ "$status" -eq 0 ]
 }
 
-@test "all 3 plugins are enabled in settings.json" {
+@test "all 8 plugins are enabled in settings.json" {
     run run_migrate
     [ "$status" -eq 0 ]
     run python3 -c "
@@ -159,7 +159,16 @@ import json
 with open('$CLAUDE_DIR/settings.json') as f:
     data = json.load(f)
 plugins = data.get('enabledPlugins', {})
-for p in ['workflow-skills@arosenkranz-claude-plugins', 'goldeneye-agents@arosenkranz-claude-plugins', 'dev-environment@arosenkranz-claude-plugins']:
+for p in [
+    'workflow-skills@arosenkranz-claude-plugins',
+    'writing-and-docs@arosenkranz-claude-plugins',
+    'git-and-pr@arosenkranz-claude-plugins',
+    'obsidian-and-notes@arosenkranz-claude-plugins',
+    'web-and-frontend@arosenkranz-claude-plugins',
+    'backend-and-infra@arosenkranz-claude-plugins',
+    'goldeneye-agents@arosenkranz-claude-plugins',
+    'dev-environment@arosenkranz-claude-plugins',
+]:
     assert plugins.get(p) is True, f'Plugin not enabled: {p}'
 "
     [ "$status" -eq 0 ]

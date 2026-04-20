@@ -1,6 +1,6 @@
 # goldeneye-agents
 
-Operation Goldeneye agent roster — 9 specialized subagents for Claude Code.
+Operation Goldeneye agent roster — 8 specialized subagents for Claude Code.
 
 ## Agents
 
@@ -14,7 +14,6 @@ Operation Goldeneye agent roster — 9 specialized subagents for Claude Code.
 | `trevelyan` | Adversarial code reviewer | "review", "challenge this", "tear this apart" |
 | `wade` | Project continuity, session catch-up | "where was I", "catch me up", "brief me" |
 | `xenia` | Performance and stress testing | "performance", "load test", "what could break" |
-| `jira-manager` | Jira ticket automation | Jira operations on TRAIN board |
 
 ## Usage
 
