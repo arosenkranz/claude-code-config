@@ -74,9 +74,22 @@ The script handles both GitHub tag types transparently:
 - **Lightweight tags**: point directly to a commit (most common for action releases)
 - **Annotated tags**: contain metadata and point to a tag object, which in turn points to a commit — the script dereferences this automatically
 
+## Authentication
+
+Using `GITHUB_TOKEN` avoids rate limits:
+- **Unauthenticated**: 60 requests/hour
+- **Authenticated**: 5,000 requests/hour
+
+```bash
+export GITHUB_TOKEN="ghp_your_token_here"
+```
+
+The script checks for `GITHUB_TOKEN` automatically and adds the `Authorization` header when present.
+
 ## Error Handling
 
 If the script exits with code 1, the tag likely doesn't exist for that repo. Verify:
 1. Correct owner/repo spelling
 2. Tag exists: `gh api repos/{owner}/{repo}/git/ref/tags/{tag}`
 3. The repo has releases (not all action repos use tags)
+4. Rate limit not exceeded (set `GITHUB_TOKEN` if unauthenticated)

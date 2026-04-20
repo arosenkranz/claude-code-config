@@ -1,4 +1,11 @@
 #!/bin/bash
+# DEPRECATED: This script references a legacy flat-layout (skills/ at repo root) that no longer exists.
+# The repo now uses the marketplace plugin layout under plugins/. Use the marketplace setup
+# documented in .claude/rules/workflows.md instead.
+# This script will be removed when the plugin split (PR 3) ships.
+echo "WARNING: sync.sh is deprecated and targets a layout that no longer exists. See .claude/rules/workflows.md." >&2
+exit 0
+
 set -e
 
 CONFIG_DIR="$(cd "$(dirname "$0")" && pwd)"
