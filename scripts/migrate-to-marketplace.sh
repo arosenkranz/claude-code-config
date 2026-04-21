@@ -237,6 +237,11 @@ data.setdefault('extraKnownMarketplaces', {})['arosenkranz-claude-plugins'] = {
 
 data.setdefault('enabledPlugins', {}).update({
     'workflow-skills@arosenkranz-claude-plugins': True,
+    'writing-and-docs@arosenkranz-claude-plugins': True,
+    'git-and-pr@arosenkranz-claude-plugins': True,
+    'obsidian-and-notes@arosenkranz-claude-plugins': True,
+    'web-and-frontend@arosenkranz-claude-plugins': True,
+    'backend-and-infra@arosenkranz-claude-plugins': True,
     'goldeneye-agents@arosenkranz-claude-plugins': True,
     'dev-environment@arosenkranz-claude-plugins': True,
 })
@@ -247,7 +252,7 @@ with open(settings_path, 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
 
-print("[migrate] Registered marketplace and enabled 3 plugins in settings.json")
+print("[migrate] Registered marketplace and enabled 8 plugins in settings.json")
 PYEOF
 }
 
