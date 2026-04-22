@@ -2,6 +2,12 @@
 
 A personal Claude Code marketplace with 3 plugins: 92 skills, 9 agents, and a full dev environment automation stack (hooks, coding standards, Claude Island integration).
 
+## How it works
+
+This repo is a Claude Code plugin marketplace hosted on GitHub. Claude Code supports registering external GitHub repos as marketplaces via `extraKnownMarketplaces` in `~/.claude/settings.json` — once registered, plugins from the repo can be enabled and auto-updated like any other Claude Code plugin.
+
+See the [Claude Code plugin marketplace docs](https://code.claude.com/docs/en/plugin-marketplaces) for how marketplaces work, and [discover and install plugins](https://code.claude.com/docs/en/discover-plugins) for how to register and enable them.
+
 ## Setup on a new machine
 
 ### 1. Clone the repo
