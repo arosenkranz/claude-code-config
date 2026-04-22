@@ -2,6 +2,12 @@
 
 A personal Claude Code marketplace with 3 plugins: 92 skills, 9 agents, and a full dev environment automation stack (hooks, coding standards, Claude Island integration).
 
+## How it works
+
+This repo is a Claude Code plugin marketplace hosted on GitHub. Claude Code supports registering external GitHub repos as marketplaces via `extraKnownMarketplaces` in `~/.claude/settings.json` — once registered, plugins from the repo can be enabled and auto-updated like any other Claude Code plugin.
+
+See the [Claude Code plugin marketplace docs](https://code.claude.com/docs/en/plugin-marketplaces) for how marketplaces work, and [discover and install plugins](https://code.claude.com/docs/en/discover-plugins) for how to register and enable them.
+
 ## Setup on a new machine
 
 ### 1. Clone the repo
@@ -34,13 +40,6 @@ See `config-templates/settings.json.template` for a complete starting point.
 ```bash
 cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 # Edit it — add your machine-specific paths, identity, infrastructure context
-```
-
-### 4. Run the migration script (if migrating from the old symlink setup)
-
-```bash
-./scripts/migrate-to-marketplace.sh --dry-run   # Preview
-./scripts/migrate-to-marketplace.sh             # Run
 ```
 
 ---
@@ -89,7 +88,6 @@ Lifecycle hooks, coding standards, and Claude Island integration:
 |---|---|---|
 | [Claude Code](https://claude.ai/code) | Required | See Anthropic docs |
 | Node.js (v18+) | MCP servers via `npx` | `brew install node` |
-| [bats](https://github.com/bats-core/bats-core) | Running tests | `brew install bats-core` |
 | [cmux](https://github.com/nicholasgasior/cmux) | workspace skill | `brew install cmux` |
 | [yazi](https://github.com/sxyazi/yazi) | workspace skill | `brew install yazi` |
 | [lazygit](https://github.com/jesseduffield/lazygit) | workspace skill | `brew install lazygit` |
@@ -108,10 +106,3 @@ These are never tracked by git — each machine maintains its own:
 
 Start from the templates in `config-templates/`.
 
----
-
-## Running tests
-
-```bash
-bats tests/
-```
