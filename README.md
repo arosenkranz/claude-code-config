@@ -36,13 +36,6 @@ cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 # Edit it — add your machine-specific paths, identity, infrastructure context
 ```
 
-### 4. Run the migration script (if migrating from the old symlink setup)
-
-```bash
-./scripts/migrate-to-marketplace.sh --dry-run   # Preview
-./scripts/migrate-to-marketplace.sh             # Run
-```
-
 ---
 
 ## Plugins
@@ -89,7 +82,6 @@ Lifecycle hooks, coding standards, and Claude Island integration:
 |---|---|---|
 | [Claude Code](https://claude.ai/code) | Required | See Anthropic docs |
 | Node.js (v18+) | MCP servers via `npx` | `brew install node` |
-| [bats](https://github.com/bats-core/bats-core) | Running tests | `brew install bats-core` |
 | [cmux](https://github.com/nicholasgasior/cmux) | workspace skill | `brew install cmux` |
 | [yazi](https://github.com/sxyazi/yazi) | workspace skill | `brew install yazi` |
 | [lazygit](https://github.com/jesseduffield/lazygit) | workspace skill | `brew install lazygit` |
@@ -108,10 +100,3 @@ These are never tracked by git — each machine maintains its own:
 
 Start from the templates in `config-templates/`.
 
----
-
-## Running tests
-
-```bash
-bats tests/
-```

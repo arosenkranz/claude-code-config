@@ -27,6 +27,21 @@ Coding standards distributed as commands — invoke via `/dev-environment:coding
 - `security` — Mandatory security checks, secret management
 - `testing` — TDD workflow, coverage requirements
 
+## Requirements
+
+| Tool | Purpose | Install |
+|---|---|---|
+| Python 3 | `claude-island-state.py`, `session-logger.sh` | `brew install python` |
+| `jq` | JSON parsing in hook scripts | `brew install jq` |
+| Obsidian CLI | Session logging to vault | Obsidian v1.12.4+ |
+| Claude Island app | macOS companion app (optional) | See Claude Island docs |
+
+**Verify hooks are loading:**
+```bash
+# Should print the resolved plugin root
+echo $CLAUDE_PLUGIN_ROOT
+```
+
 ## Claude Island
 
 `claude-island-state.py` syncs session state to the Claude Island macOS companion app via Unix socket. Comment out its entries in `hooks.json` if the app isn't installed.

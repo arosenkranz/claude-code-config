@@ -36,14 +36,6 @@ Copy and customize CLAUDE.md:
 cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 ```
 
-## Migrating from old symlink setup
-
-```bash
-./scripts/migrate-to-marketplace.sh --dry-run   # Preview
-./scripts/migrate-to-marketplace.sh             # Run
-./scripts/migrate-to-marketplace.sh --restore   # Rollback if needed
-```
-
 ## Adding a new skill
 
 1. Create `plugins/workflow-skills/skills/<name>/SKILL.md` with `name` and `description` frontmatter
@@ -62,18 +54,9 @@ Edit `plugins/dev-environment/hooks/hooks.json` directly. The `${CLAUDE_PLUGIN_R
 
 ## Coding standards
 
-Standards live in `plugins/dev-environment/commands/` and are:
-- Invocable on-demand: `/dev-environment:coding-style`
-- Symlinked to `~/.claude/rules/` by the migration script for always-active enforcement
+Standards live in `plugins/dev-environment/commands/` and are invocable on-demand via `/dev-environment:coding-style` (and other command names in that directory).
 
 ## Local-only files (never tracked by git)
 
 - `~/.claude/settings.json` — managed locally, runtime mutations never dirty the repo
 - `~/.claude/CLAUDE.md` — machine-specific identity and context
-
-## Running tests
-
-```bash
-bats tests/                             # All tests
-bats tests/migrate-to-marketplace.bats  # Migration script tests
-```
