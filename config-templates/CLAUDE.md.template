@@ -32,11 +32,21 @@
 
 Rules that override default behavior to prevent common wrong-approach friction:
 
-1. **Git workflow default** — Always create a feature branch and PR unless explicitly told to commit directly to main.
+1. **Git workflow default** — Always create a feature branch and PR unless explicitly told to commit directly to main. Never commit directly to main by default. Use `gh pr create` for all PRs. **Squash-merge is the default PR strategy** (so frequent in-branch commits stay clean in the main history).
 
-2. **Implementation-first default** — When asked to implement changes, start coding immediately. Skip planning documents unless explicitly asked.
+2. **Plan-first default** — For non-trivial changes, write a plan before writing code. **Skip planning only when ALL of these are true:** the change is single-file, under ~20 lines, no new dependencies, no API/schema/auth/security/migration impact, no user-visible behavior change. Examples that **skip** planning: typo fix, one-line bug fix, single rename across one file, isolated config tweak. Examples that **require** planning: any multi-file change, new endpoint or schema field, anything touching auth/security/concurrency, anything that changes user-visible behavior. For "requires planning" cases: write either a 3-bullet inline plan (small) or a `PLAN.md` (larger). **Do not begin implementation until the user explicitly approves the plan.** Once approved, prefer clearing context (`/clear` or new session) before executing. **Source: Datadog Agentic Coding Patterns — "Plan before you execute" + "Iterate on the plan".**
 
-3. **Non-interactive shell commands** — Always add non-interactive flags: `--yes`, `--force`, `-y`, `--non-interactive`.
+3. **Spec-before-plan for ambiguous features** — When the feature has unclear or under-specified requirements, write `SPEC.md` first focused on observable behavior, ask clarifying questions, iterate to user signoff, *then* derive `PLAN.md` from the spec. Trigger: any new feature where the description includes hedging language ("something like…", "I want X-ish…") or omits inputs/outputs/edge cases. Use the `/spec-and-plan` skill to drive the SPEC → PLAN → EXECUTE flow. **Source: Datadog Agentic Coding Patterns — "Spec before you plan".**
+
+4. **Frequent small commits, squash on merge** — Inside a feature branch, commit after each meaningful step (a passing test, a working sub-feature, before any review loop, before any context-clear). Keep messages short. The PR will be squash-merged so noisy in-branch history is fine. **Source: Datadog Agentic Coding Patterns — "Commit frequently".**
+
+5. **One scoped task at a time** — One feature branch = one logical change. Do not bundle unrelated edits ("while I'm here, I'll also fix X"). If you discover a separate issue mid-task, either note it and continue, or stop and start a new branch — do not mix. **Source: Datadog Agentic Coding Patterns — "One thing at a time".**
+
+6. **Local diff review before agent review** — After implementing changes, **first** run `git diff` (or `git show` per commit) and self-review against the plan/spec. Then spawn the `trevelyan` goldeneye subagent (Opus, adversarial reviewer) to review the diff. Apply useful suggestions; if rejected, leave a one-line reason. **Cap at 2 review rounds.** Re-loop only if trevelyan returns CRITICAL or HIGH severity issues — do not keep looping on stylistic nitpicks. **Source: Datadog Agentic Coding Patterns — "Review the changeset locally" + "Get agent review in a loop".**
+
+7. **Non-interactive shell commands** — When running install scripts, package managers, or CLIs that may prompt for input, always add non-interactive flags: `--yes`, `--force`, `-y`, `--non-interactive`. Claude cannot respond to interactive prompts.
+
+8. **UI/design boldness** — When making UI/styling changes, prefer bold and noticeable over conservative. Use `text-base` or larger for labels. Make changes the user can see at a glance.
 
 ## Gotchas
 
