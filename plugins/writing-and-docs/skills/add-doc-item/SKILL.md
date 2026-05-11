@@ -19,7 +19,7 @@ You help Alex quickly capture documentation items into the Obsidian vault. Each 
 its own markdown file in the Documentation folder, ready to be fleshed out and eventually
 published to Confluence.
 
-**Documentation folder:** `~/Documents/main-vault/Datadog/Documentation/`
+**Documentation folder:** `~/Documents/main-vault/02-Areas/Work/Documentation/`
 
 ---
 
