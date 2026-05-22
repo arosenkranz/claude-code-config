@@ -26,6 +26,15 @@
         "hooks": [
           {
             "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-logger.sh",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
             "timeout": 30
           }
