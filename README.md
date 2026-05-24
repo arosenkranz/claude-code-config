@@ -1,6 +1,6 @@
 # claude-code-config
 
-A personal Claude Code marketplace with 3 plugins: 92 skills, 9 agents, and a full dev environment automation stack (hooks, coding standards, Claude Island integration).
+A personal Claude Code marketplace with 7 plugins: 57+ skills, 8 agents, and a full dev environment automation stack (hooks, coding standards, Claude Island integration).
 
 ## How it works
 
@@ -28,7 +28,9 @@ git clone git@github.com:arosenkranz/claude-code-config.git ~/workspace/claude-c
   "enabledPlugins": {
     "workflow-skills@arosenkranz-claude-plugins": true,
     "goldeneye-agents@arosenkranz-claude-plugins": true,
-    "dev-environment@arosenkranz-claude-plugins": true
+    "dev-environment@arosenkranz-claude-plugins": true,
+    "git-and-pr@arosenkranz-claude-plugins": true,
+    "obsidian-and-notes@arosenkranz-claude-plugins": true
   }
 }
 ```
@@ -48,18 +50,39 @@ cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 
 ### workflow-skills
 
-92 skills invocable via `/skill-name`:
+17 daily-driver skills invocable via `/skill-name`:
 
 ```
-/morning-plan       /course-review      /doc-generate
-/api-scaffold       /agent-browser      /patrol
+/morning-plan        /end-of-day          /weekly-review
+/capture             /start-task          /patrol
+/workspace           /search-first        /optimize
+/improve-skills      /find-skills         /skill-creator
+/mcp-builder         /spec-and-plan       /pdf
+/xlsx                /evolve
 ```
 
-See `plugins/workflow-skills/README.md` for the full list.
+### git-and-pr
+
+Git and PR automation:
+
+```
+/ship                /refine              /release
+/address-pr-feedback /cleanup-worktrees   /parallel-worktree-session
+/pin-actions
+```
+
+### obsidian-and-notes
+
+Obsidian vault, session logging, and the continuous-learning instinct system:
+
+```
+/obsidian-core       /obsidian-session    /vault-search
+/read-notes          /continuous-learning-v2
+```
 
 ### goldeneye-agents
 
-9 specialized subagents (Operation Goldeneye roster):
+8 specialized subagents (Operation Goldeneye roster):
 
 | Agent | Role |
 |---|---|
@@ -71,14 +94,37 @@ See `plugins/workflow-skills/README.md` for the full list.
 | `trevelyan` | Adversarial code reviewer |
 | `wade` | Project continuity, session catch-up |
 | `xenia` | Performance and stress testing |
-| `jira-manager` | Jira ticket automation |
 
 ### dev-environment
 
 Lifecycle hooks, coding standards, and Claude Island integration:
 
-- **Hooks**: `session-start.sh`, `session-logger.sh`, `pre-compact.sh`, `post-edit-format.sh`, `check-console-log.sh`, `claude-island-state.py`
-- **Commands** (coding standards): `/dev-environment:coding-style`, `/dev-environment:git-workflow`, `/dev-environment:security`, `/dev-environment:testing`, `/dev-environment:performance`, `/dev-environment:memory-system`
+- **Hooks**: `session-start.sh`, `session-logger.sh`, `pre-compact.sh`, `post-edit-format.sh`, `check-console-log.sh`, `config-protection.sh`, `pre-commit-lint.sh`, `cost-tracker.sh`, `claude-island-state.py`
+- **Commands** (coding standards): `/dev-environment:coding-style`, `/dev-environment:git-workflow`, `/dev-environment:security`, `/dev-environment:testing`, `/dev-environment:performance`
+
+### backend-and-infra *(enable per project)*
+
+Backend, infrastructure, and language skills:
+
+```
+/api-scaffold        /backend-architect   /backend-patterns
+/docker-patterns     /docker-compose-setup /deploying-applications
+/terraform-specialist /homelab-helper      /red-green-tdd
+/test-harness        /automating-tests    /project-setup
+/typescript-pro      /javascript-pro      /python-pro
+/golang-pro
+```
+
+### web-and-frontend *(enable per project)*
+
+Frontend, Astro, and browser automation:
+
+```
+/agent-browser       /frontend-developer  /astro-component-scaffold
+/astro-content-collections /astro-performance-audit /webapp-testing
+/verify-ui           /canvas-design       /theme-factory
+/web-artifacts-builder /algorithmic-art   /rams
+```
 
 ---
 
@@ -105,4 +151,3 @@ These are never tracked by git — each machine maintains its own:
 - `~/.claude/CLAUDE.md` — identity, machine paths, infrastructure context
 
 Start from the templates in `config-templates/`.
-
