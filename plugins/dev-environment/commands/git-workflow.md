@@ -68,24 +68,23 @@ When creating PRs:
 
 ## Feature Implementation Workflow
 
-1. **Plan First**
-   - Use **m** agent to create implementation plan
-   - Identify dependencies and risks
-   - Break down into phases
+1. **Brainstorm First**
+   - Start non-trivial features with the `superpowers:brainstorming` skill — explore intent, requirements, and design before code.
+   - Interview the user on anything ambiguous; don't assume.
 
-2. **TDD Approach**
-   - Use **natalya** agent
-   - Write tests first (RED)
-   - Implement to pass tests (GREEN)
-   - Refactor (IMPROVE)
-   - Verify 80%+ coverage
+2. **Pressure-test the approach**
+   - Run the plan or diagnosis past the goldeneye agents before committing to it: **trevelyan** (challenge assumptions, find logical flaws) and **m** (architecture/planning).
+   - Treat their critique as input, not gospel — verify claims before acting on them.
 
-3. **Code Review**
-   - Use **trevelyan** agent immediately after writing code
-   - Address CRITICAL and HIGH issues
-   - Fix MEDIUM issues when possible
+3. **Implement with tests alongside**
+   - Write the code and its tests together (test-first when the behavior is well-specified). See `testing.md`.
+   - For UI/runtime changes, verify in a real browser session, not just via tests.
 
-4. **Commit & Push**
+4. **Review**
+   - Use the `code-review` skill (or **trevelyan**) on the diff before opening a PR.
+   - Address CRITICAL and HIGH issues; fix MEDIUM when reasonable.
+
+5. **Commit & Push**
    - Don't use extended commit messages when possible
    - Don't ever include Claude or any other agent's name in commit messages
    - Follow conventional commits format

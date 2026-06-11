@@ -1,30 +1,18 @@
-# Testing Requirements
+# Testing
 
-## Minimum Test Coverage: 80%
+## Default: tests alongside code
 
-Test Types (ALL required):
-1. **Unit Tests** - Individual functions, utilities, components
-2. **Integration Tests** - API endpoints, database operations
-3. **E2E Tests** - Critical user flows (agent-browser)
+Write tests with the code they cover, not as an afterthought. Test-first is a good default when the behavior is well-specified (write the failing test, make it pass, refactor), but it's a preference, not a law — match the task.
 
-## Test-Driven Development
+Lean toward unit tests for logic (pure functions, scheduling/derivation, reducers) and integration tests for API/DB boundaries. Don't chase a coverage number; cover the behavior that matters and the edge cases that bite. When you delete a module, delete its tests too.
 
-MANDATORY workflow:
-1. Write test first (RED)
-2. Run test - it should FAIL
-3. Write minimal implementation (GREEN)
-4. Run test - it should PASS
-5. Refactor (IMPROVE)
-6. Verify coverage (80%+)
+## Verify behavior in the real app
 
-## Troubleshooting Test Failures
+Tests prove logic. For UI and runtime bugs, also verify the fix in the real app — drive a browser session (agent-browser / the `verify` and `run` skills) and observe actual behavior before claiming it works. "Looks like it works" should mean you watched it work.
 
-1. Use **natalya** agent
-2. Check test isolation
-3. Verify mocks are correct
-4. Fix implementation, not tests (unless tests are wrong)
+## Troubleshooting test failures
 
-## Agent Support
-
-- **natalya** - Use PROACTIVELY for new features, enforces write-tests-first
-- **agent-browser** skill - E2E testing specialist
+1. Reproduce the failure and read the actual output before theorizing.
+2. Check test isolation and that mocks reflect real behavior.
+3. Fix the implementation, not the test — unless the test encodes the wrong expectation.
+4. Use the `superpowers:systematic-debugging` skill for non-obvious failures.
