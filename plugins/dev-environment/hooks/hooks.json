@@ -10,26 +10,6 @@
             "timeout": 10
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
       }
     ],
     "PreCompact": [
@@ -40,15 +20,6 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/pre-compact.sh",
             "timeout": 10
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
           }
         ]
       }
@@ -71,15 +42,6 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/check-console-log.sh",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
           }
         ]
       }
@@ -105,59 +67,6 @@
             "timeout": 5
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
       }
     ],
     "PermissionRequest": [
@@ -168,15 +77,6 @@
             "type": "command",
             "command": "afplay /System/Library/Sounds/Ping.aiff",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
           }
         ]
       }
