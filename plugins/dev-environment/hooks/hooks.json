@@ -10,35 +10,6 @@
             "timeout": 10
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-logger.sh",
-            "timeout": 30
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
       }
     ],
     "PreCompact": [
@@ -49,15 +20,6 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/pre-compact.sh",
             "timeout": 10
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
           }
         ]
       }
@@ -82,15 +44,6 @@
             "timeout": 5
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
       }
     ],
     "PreToolUse": [
@@ -102,14 +55,6 @@
             "if": "Bash(git commit*)",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/pre-commit-lint.sh",
             "timeout": 30
-          },
-          {
-            "type": "agent",
-            "if": "Bash(git commit*)",
-            "prompt": "A git commit is about to happen. Run `git diff --cached --stat` and `git diff --cached` to see what's staged. Review the changes: challenge assumptions, flag logical flaws, security issues, or missing tests. Output a brief verdict: LGTM or a bulleted list of concerns. Keep it under 10 lines.",
-            "timeout": 60,
-            "statusMessage": "Trevelyan reviewing staged changes...",
-            "async": true
           }
         ]
       },
@@ -122,59 +67,6 @@
             "timeout": 5
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
-          }
-        ]
       }
     ],
     "PermissionRequest": [
@@ -185,15 +77,6 @@
             "type": "command",
             "command": "afplay /System/Library/Sounds/Ping.aiff",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/claude-island-state.py",
-            "timeout": 30
           }
         ]
       }
