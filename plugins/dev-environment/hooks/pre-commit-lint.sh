@@ -5,16 +5,21 @@
 
 set -euo pipefail
 
-# Walk up to find project root (where package.json lives)
-dir="$PWD"
-while [[ "$dir" != "/" ]]; do
-  [[ -f "$dir/package.json" ]] && break
-  dir=$(dirname "$dir")
-done
-if [[ ! -f "$dir/package.json" ]]; then
+# Advisory: nudge away from committing directly on main/master.
+# Intentionally does NOT exit — honors the "commit to main when told" exception.
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
+if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+  echo "⚠️  Heads up: committing on '$branch'. Prefer a feature branch (git checkout -b ...) or /ship — unless you intend this."
+fi
+
+# Anchor to the git repo root, not the first ancestor dir with package.json.
+# Prevents the hook from climbing out of the repo and running arbitrary npm
+# scripts from an untrusted package.json found in a parent directory.
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null || true)
+if [[ -z "$repo_root" || ! -f "$repo_root/package.json" ]]; then
   exit 0
 fi
-cd "$dir"
+cd "$repo_root"
 
 has_script() {
   node -e "const p=require('./package.json'); process.exit(p.scripts?.['$1'] ? 0 : 1)" 2>/dev/null
