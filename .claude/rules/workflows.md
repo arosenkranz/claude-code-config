@@ -2,7 +2,7 @@
 
 ## Architecture
 
-This repo is a Claude Code marketplace with 7 plugins (34 skills, 6 agents total):
+This repo is a Claude Code marketplace with 7 plugins (30 skills, 6 agents total):
 - `workflow-skills` — daily-driver workflow skills invocable via `/name`
 - `goldeneye-agents` — specialized subagents (boris, m, natalya, q, trevelyan, xenia)
 - `dev-environment` — lifecycle hooks, commands (coding standards)
