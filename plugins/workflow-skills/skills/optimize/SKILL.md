@@ -71,8 +71,8 @@ Output a markdown report with these sections:
 ```
 | Component | Type | Slash Uses | Auto-Triggered | Status |
 |-----------|------|-----------|----------------|--------|
-| /pr       | skill | 2        | -              | Active |
-| patrol    | skill | 0        | yes            | Infra  |
+| /ship     | skill | 2        | -              | Active |
+| some-skill | skill | 0       | yes            | Stale? |
 | ...       |      |           |                |        |
 ```
 

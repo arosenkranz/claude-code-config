@@ -2,12 +2,18 @@
 
 ## Architecture
 
-This repo is a Claude Code marketplace with 3 plugins:
-- `workflow-skills` — 92 skills invocable via `/name`
-- `goldeneye-agents` — 9 specialized subagents
-- `dev-environment` — lifecycle hooks, commands (coding standards), Claude Island
+This repo is a Claude Code marketplace with 7 plugins (30 skills, 6 agents total):
+- `workflow-skills` — daily-driver workflow skills invocable via `/name`
+- `goldeneye-agents` — specialized subagents (boris, m, natalya, q, trevelyan, xenia)
+- `dev-environment` — lifecycle hooks, commands (coding standards)
+- `backend-and-infra` — backend, infra, homelab, and language skills
+- `web-and-frontend` — Astro, frontend, browser automation, design review
+- `git-and-pr` — git and PR automation (ship, release, worktrees, pin-actions)
+- `obsidian-and-notes` — Obsidian vault search and note skills
 
 Plugins auto-discover their content via `${CLAUDE_PLUGIN_ROOT}`. No symlinks needed.
+Skills are discovered from `plugins/<plugin>/skills/<name>/SKILL.md`; agents from
+`plugins/goldeneye-agents/agents/<name>.md`.
 
 ## Setting up on a new machine
 
@@ -26,7 +32,11 @@ Add to `~/.claude/settings.json`:
   "enabledPlugins": {
     "workflow-skills@arosenkranz-claude-plugins": true,
     "goldeneye-agents@arosenkranz-claude-plugins": true,
-    "dev-environment@arosenkranz-claude-plugins": true
+    "dev-environment@arosenkranz-claude-plugins": true,
+    "backend-and-infra@arosenkranz-claude-plugins": true,
+    "web-and-frontend@arosenkranz-claude-plugins": true,
+    "git-and-pr@arosenkranz-claude-plugins": true,
+    "obsidian-and-notes@arosenkranz-claude-plugins": true
   }
 }
 ```
