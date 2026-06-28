@@ -10,7 +10,7 @@ Enforce the test-driven development ceremony: write failing tests first, verify 
 
 Supported ecosystems (v1): JavaScript/TypeScript (npm/yarn/pnpm/bun + Jest/Vitest) and Python (pytest/tox).
 
-For test patterns (AAA structure, mocking, fixtures), see the `automating-tests` skill. This skill handles the ceremony, not the patterns.
+This skill handles the red/green ceremony, not test patterns. For pattern guidance (AAA structure, mocking, fixtures), follow the conventions already established in the project's existing test suite.
 
 ---
 
