@@ -1,4 +1,4 @@
-from build_review import parse_sections, slugify, escape_html
+from build_review import parse_sections, slugify, escape_html, render_html
 
 
 def test_parse_sections_splits_on_level_two_headings():
@@ -42,3 +42,21 @@ def test_slugify_empty_input_returns_fallback():
 
 def test_escape_html_escapes_special_characters():
     assert escape_html("<script>&\"'") == "&lt;script&gt;&amp;&quot;&#x27;"
+
+
+def test_render_html_includes_sections_and_critique_and_escapes_content():
+    sections = [{"heading": "Phase 1 <script>", "content": "Do the thing & verify."}]
+    html_out = render_html(
+        plan_title="Sample Plan",
+        source_path="/tmp/sample.md",
+        generated_at="2026-07-13 10:00:00",
+        critique={"trevelyan": "Watch for race conditions.", "m": None},
+        sections=sections,
+    )
+    assert "Sample Plan" in html_out
+    assert "Phase 1 &lt;script&gt;" in html_out
+    assert "Do the thing &amp; verify." in html_out
+    assert "Watch for race conditions." in html_out
+    assert "Critique unavailable." in html_out
+    assert "Copy Feedback" in html_out
+    assert "navigator.clipboard.writeText" in html_out
