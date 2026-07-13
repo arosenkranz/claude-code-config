@@ -60,3 +60,27 @@ def test_render_html_includes_sections_and_critique_and_escapes_content():
     assert "Critique unavailable." in html_out
     assert "Copy Feedback" in html_out
     assert "navigator.clipboard.writeText" in html_out
+
+
+import os
+
+from build_review import build_review
+
+
+def test_build_review_writes_html_file_and_returns_path(tmp_path):
+    plan_file = tmp_path / "sample-plan.md"
+    plan_file.write_text("# My Sample Plan\n\n## Overview\nDo the thing.\n")
+
+    output_path = build_review(
+        plan_path=str(plan_file),
+        trevelyan_critique="Looks risky.",
+        m_critique=None,
+        output_dir=str(tmp_path),
+    )
+
+    assert os.path.exists(output_path)
+    assert output_path.startswith(str(tmp_path))
+    content = open(output_path, encoding="utf-8").read()
+    assert "My Sample Plan" in content
+    assert "Looks risky." in content
+    assert "Critique unavailable." in content

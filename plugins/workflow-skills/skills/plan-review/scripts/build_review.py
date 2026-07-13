@@ -163,3 +163,63 @@ document.getElementById('copy-btn').addEventListener('click', function () {{
 </script>
 </body>
 </html>'''
+
+
+import argparse
+import datetime
+import os
+
+
+def build_review(plan_path: str, trevelyan_critique: str | None, m_critique: str | None, output_dir: str = "/tmp") -> str:
+    with open(plan_path, "r", encoding="utf-8") as f:
+        plan_text = f.read()
+
+    sections = parse_sections(plan_text)
+
+    stripped = plan_text.strip()
+    first_line = stripped.splitlines()[0] if stripped else ""
+    plan_title = first_line.lstrip("#").strip() if first_line.startswith("#") else os.path.basename(plan_path)
+
+    generated_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    slug = slugify(plan_title)
+    output_path = os.path.join(output_dir, f"claude-plan-review-{slug}-{timestamp}.html")
+
+    html_out = render_html(
+        plan_title=plan_title,
+        source_path=plan_path,
+        generated_at=generated_at,
+        critique={"trevelyan": trevelyan_critique, "m": m_critique},
+        sections=sections,
+    )
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(html_out)
+
+    return output_path
+
+
+def _read_optional_file(path):
+    if not path:
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read().strip() or None
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate an interactive HTML plan review page.")
+    parser.add_argument("plan_path", help="Path to the plan markdown file")
+    parser.add_argument("--trevelyan-file", help="Path to a file containing trevelyan's critique text")
+    parser.add_argument("--m-file", help="Path to a file containing m's critique text")
+    parser.add_argument("--output-dir", default="/tmp", help="Directory to write the generated HTML file (default: /tmp)")
+    args = parser.parse_args()
+
+    trevelyan_critique = _read_optional_file(args.trevelyan_file)
+    m_critique = _read_optional_file(args.m_file)
+
+    output_path = build_review(args.plan_path, trevelyan_critique, m_critique, args.output_dir)
+    print(output_path)
+
+
+if __name__ == "__main__":
+    main()
