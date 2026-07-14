@@ -58,7 +58,7 @@ cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 /workspace           /search-first        /optimize
 /improve-skills      /find-skills         /skill-creator
 /mcp-builder         /spec-and-plan       /pdf
-/xlsx                /evolve             /plan-review
+/xlsx                /evolve              /plan-review
 ```
 
 ### git-and-pr
