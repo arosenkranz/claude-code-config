@@ -9,7 +9,7 @@ shell-snapshots/
 debug/
 todos/
 tasks/
-plans/
+/plans/
 cache/
 telemetry/
 file-history/
