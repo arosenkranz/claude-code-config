@@ -50,7 +50,7 @@ cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 
 ### workflow-skills
 
-17 daily-driver skills invocable via `/skill-name`:
+18 daily-driver skills invocable via `/skill-name`:
 
 ```
 /morning-plan        /end-of-day          /weekly-review
@@ -58,7 +58,7 @@ cp config-templates/CLAUDE.md.template ~/.claude/CLAUDE.md
 /workspace           /search-first        /optimize
 /improve-skills      /find-skills         /skill-creator
 /mcp-builder         /spec-and-plan       /pdf
-/xlsx                /evolve
+/xlsx                /evolve             /plan-review
 ```
 
 ### git-and-pr
