@@ -1,70 +1,16 @@
 # Coding Style
 
-## Immutability (CRITICAL)
+## Core Preferences
 
-ALWAYS create new objects, NEVER mutate:
+- **Immutability** — create new objects/arrays instead of mutating (spread, `map`/`filter`, not in-place assignment).
+- **Many small files over few large ones** — high cohesion, low coupling. 200-400 lines typical, 800 max. Organize by feature/domain, not by type.
+- **Validate external input** at the boundary (zod or equivalent); trust internal data.
+- **Handle errors where you can add context** — catch, log with context, rethrow a user-meaningful error. Don't swallow.
 
-```javascript
-// WRONG: Mutation
-function updateUser(user, name) {
-  user.name = name  // MUTATION!
-  return user
-}
-
-// CORRECT: Immutability
-function updateUser(user, name) {
-  return {
-    ...user,
-    name
-  }
-}
-```
-
-## File Organization
-
-MANY SMALL FILES > FEW LARGE FILES:
-- High cohesion, low coupling
-- 200-400 lines typical, 800 max
-- Extract utilities from large components
-- Organize by feature/domain, not by type
-
-## Error Handling
-
-ALWAYS handle errors comprehensively:
-
-```typescript
-try {
-  const result = await riskyOperation()
-  return result
-} catch (error) {
-  console.error('Operation failed:', error)
-  throw new Error('Detailed user-friendly message')
-}
-```
-
-## Input Validation
-
-ALWAYS validate user input:
-
-```typescript
-import { z } from 'zod'
-
-const schema = z.object({
-  email: z.string().email(),
-  age: z.number().int().min(0).max(150)
-})
-
-const validated = schema.parse(input)
-```
-
-## Code Quality Checklist
+## Quality Checklist
 
 Before marking work complete:
-- [ ] Code is readable and well-named
-- [ ] Functions are small (<50 lines)
-- [ ] Files are focused (<800 lines)
-- [ ] No deep nesting (>4 levels)
-- [ ] Proper error handling
-- [ ] No console.log statements
-- [ ] No hardcoded values
-- [ ] No mutation (immutable patterns used)
+- [ ] Functions small (<50 lines), no deep nesting (>4 levels)
+- [ ] No leftover console.log / debug statements
+- [ ] No hardcoded values or secrets
+- [ ] No mutation of shared state
