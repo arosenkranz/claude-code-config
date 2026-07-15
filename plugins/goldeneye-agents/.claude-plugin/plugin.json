@@ -1,5 +1,5 @@
 {
   "name": "goldeneye-agents",
-  "version": "1.1.0",
-  "description": "Operation Goldeneye — 8 specialized subagents (boris, m, natalya, trevelyan, xenia, q, wade, moneypenny)"
+  "version": "1.2.0",
+  "description": "Operation Goldeneye — 6 specialized subagents (boris, m, natalya, trevelyan, xenia, q)"
 }
