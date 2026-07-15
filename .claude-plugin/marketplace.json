@@ -40,7 +40,7 @@
     {
       "name": "goldeneye-agents",
       "source": "./plugins/goldeneye-agents",
-      "description": "Operation Goldeneye — 8 specialized subagents (boris, m, natalya, trevelyan, xenia, q, wade, moneypenny)"
+      "description": "Operation Goldeneye — 6 specialized subagents (boris, m, natalya, trevelyan, xenia, q)"
     },
     {
       "name": "dev-environment",

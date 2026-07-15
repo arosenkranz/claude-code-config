@@ -8,7 +8,7 @@ All lifecycle hooks are consolidated here for deterministic ordering.
 
 | Event | Scripts |
 |---|---|
-| `SessionStart` | `session-start.sh` (env setup, wade hint) |
+| `SessionStart` | `session-start.sh` (env setup, uncommitted-changes flag) |
 | `PreCompact` | `pre-compact.sh` |
 | `PostToolUse` (Edit) | `post-edit-format.sh` (formatter) + `check-console-log.sh` |
 | `PostToolUse` (Write) | `check-console-log.sh` |

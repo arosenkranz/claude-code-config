@@ -176,10 +176,10 @@ main() {
         echo "[SessionStart] Use /sessions load <alias> to continue a previous session" >&2
     fi
 
-    # Hint wade when uncommitted work exists
+    # Flag uncommitted work at session start
     if git -C "$PWD" rev-parse --git-dir >/dev/null 2>&1; then
         if git -C "$PWD" status --porcelain 2>/dev/null | grep -q '^'; then
-            echo "[SessionStart] Uncommitted changes detected. Consider invoking wade for a project briefing." >&2
+            echo "[SessionStart] Uncommitted changes detected in this repo." >&2
         fi
     fi
 

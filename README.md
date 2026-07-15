@@ -82,17 +82,15 @@ Obsidian vault, session logging, and the continuous-learning instinct system:
 
 ### goldeneye-agents
 
-8 specialized subagents (Operation Goldeneye roster):
+6 specialized subagents (Operation Goldeneye roster):
 
 | Agent | Role |
 |---|---|
 | `boris` | Security specialist, attacker mindset |
 | `m` | Strategic planning, architecture, docs |
-| `moneypenny` | Session logging, blog content, brag docs |
 | `natalya` | TDD implementation engineer |
 | `q` | Infrastructure, Docker, CI/CD, incidents |
 | `trevelyan` | Adversarial code reviewer |
-| `wade` | Project continuity, session catch-up |
 | `xenia` | Performance and stress testing |
 
 ### dev-environment
